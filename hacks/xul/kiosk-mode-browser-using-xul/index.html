@@ -1,0 +1,374 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Kiosk mode browser using XUL &#8211; TECH NOTES, RAMBLINGS & WHATNOTS</title>
+<meta name="description" content="I volunteer at the Warren memorial library and was asked recently to create a Kiosk mode browser that could not be used to browse anything else except for the library's book catalog. I started exploring the various options available and soon settled on two browsers, Opera and Firefox, while it is fairly easy to setup opera in kiosk mode you still need to pay Opera for the professional version to make it work.That ruled out opera and I was left with Firefox.I started hunting around for an extension that would turn the Firefox browser into a locked down version where you could not navigate to any site. I downloaded the R-Kiosk extension this extension does a pretty decent job of locking down the browser.The extension disables most of the menu items and does a pretty good job in disabling the navigation bar and the address bar,but the extension fails to block the preferences menu item thus leaving a chink in its armor which can be exploited by anyone who is computer savvy. The person can use the preferences menu to set the home page to any desired site close preferences and hit alt+home on the keyboard to navigate to that page.
+For e.g if you wanted to restrict the patron from visiting any other site except for the library's own home page a malicious user could set the home page to something like www.google.com and navigate to any site from there. The author also claims that the extension can only be uninstalled from safe mode, but by going to http://addons.mozilla.com and installing any addon you still get access to the addons window and can uninstall the extension from there.
+In the end I found that the only way to circumvent these issues was to disable almost all the menu items, this was too much work which included hacking the perf.js file in the profiles folder so I decided to write a XUL widget instead.
+Here is the XUL code
+&lt;?xml version="1.0"?&gt;
+&lt;?xml-stylesheet href="chrome://global/skin/" type="text/css"?&gt;
+&lt;window
+id="google's Online catalog"
+title="googleOnline catalog"
+orient="horizontal"
+width="1000"
+height="768"
+xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+xmlns:html="http://www.w3.org/1999/xhtml"&gt;
+&lt;vbox flex="1"&gt;
+&lt;hbox pack="center"&gt;
+&lt;html:font face="verdana" color="blue"&gt;
+&lt;html:strong&gt;
+&lt;label value="Google's online catalog"/&gt;
+&lt;/html:strong&gt;
+&lt;/html:font&gt;
+&lt;/hbox&gt;
+&lt;hbox flex="1" orient="vertical"&gt;
+&lt;html:iframe src="http://books.google.com/" flex="1"&gt;&lt;/html:iframe&gt;
+&lt;/hbox&gt;
+&lt;/vbox&gt;
+&lt;/window&gt;
+PS: Copy pasting the code above will not work please download the code here, for some reason the code tag in wordpress does not work with XUL code :( properly. once you download the file from the above link rename the file from kiosk.doc to kiosk.xul.
+you can preview the above code in this excellent XUL live editor.
+
+On a Mac you can setup a restricted account, set it to auto login without password and then set Firefox to start this XUL file at login. to further prevent access to the OS install the profile password extension for Firefox. This is not an elegant solution but it got the job done.
+The XUL file can be started on login with the following command line typed into a shell script
+cd /
+cd Applications
+cd Firefox.app
+cd Contents
+cd MacOS
+./firefox -chrome /nameofxulfile.xul
+On a windows machine the default shell can be changed to something like Blackbox which is a minimal shell and can be used for the same purpose, but it isn't foolproof the only other way is to set the shell as Firefox which I haven't found a way to do yet.
+powered by performancing firefox
+
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Kiosk mode browser using XUL">
+<meta name="twitter:description" content="I volunteer at the Warren memorial library and was asked recently to create a Kiosk mode browser that could not be used to browse anything else except for the library's book catalog. I started exploring the various options available and soon settled on two browsers, Opera and Firefox, while it is fairly easy to setup opera in kiosk mode you still need to pay Opera for the professional version to make it work.That ruled out opera and I was left with Firefox.I started hunting around for an extension that would turn the Firefox browser into a locked down version where you could not navigate to any site. I downloaded the R-Kiosk extension this extension does a pretty decent job of locking down the browser.The extension disables most of the menu items and does a pretty good job in disabling the navigation bar and the address bar,but the extension fails to block the preferences menu item thus leaving a chink in its armor which can be exploited by anyone who is computer savvy. The person can use the preferences menu to set the home page to any desired site close preferences and hit alt+home on the keyboard to navigate to that page.
+For e.g if you wanted to restrict the patron from visiting any other site except for the library's own home page a malicious user could set the home page to something like www.google.com and navigate to any site from there. The author also claims that the extension can only be uninstalled from safe mode, but by going to http://addons.mozilla.com and installing any addon you still get access to the addons window and can uninstall the extension from there.
+In the end I found that the only way to circumvent these issues was to disable almost all the menu items, this was too much work which included hacking the perf.js file in the profiles folder so I decided to write a XUL widget instead.
+Here is the XUL code
+&lt;?xml version="1.0"?&gt;
+&lt;?xml-stylesheet href="chrome://global/skin/" type="text/css"?&gt;
+&lt;window
+id="google's Online catalog"
+title="googleOnline catalog"
+orient="horizontal"
+width="1000"
+height="768"
+xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+xmlns:html="http://www.w3.org/1999/xhtml"&gt;
+&lt;vbox flex="1"&gt;
+&lt;hbox pack="center"&gt;
+&lt;html:font face="verdana" color="blue"&gt;
+&lt;html:strong&gt;
+&lt;label value="Google's online catalog"/&gt;
+&lt;/html:strong&gt;
+&lt;/html:font&gt;
+&lt;/hbox&gt;
+&lt;hbox flex="1" orient="vertical"&gt;
+&lt;html:iframe src="http://books.google.com/" flex="1"&gt;&lt;/html:iframe&gt;
+&lt;/hbox&gt;
+&lt;/vbox&gt;
+&lt;/window&gt;
+PS: Copy pasting the code above will not work please download the code here, for some reason the code tag in wordpress does not work with XUL code :( properly. once you download the file from the above link rename the file from kiosk.doc to kiosk.xul.
+you can preview the above code in this excellent XUL live editor.
+
+On a Mac you can setup a restricted account, set it to auto login without password and then set Firefox to start this XUL file at login. to further prevent access to the OS install the profile password extension for Firefox. This is not an elegant solution but it got the job done.
+The XUL file can be started on login with the following command line typed into a shell script
+cd /
+cd Applications
+cd Firefox.app
+cd Contents
+cd MacOS
+./firefox -chrome /nameofxulfile.xul
+On a windows machine the default shell can be changed to something like Blackbox which is a minimal shell and can be used for the same purpose, but it isn't foolproof the only other way is to set the shell as Firefox which I haven't found a way to do yet.
+powered by performancing firefox
+
+
+">
+
+
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://harishbsrinivas.github.io/images/default-thumb.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kiosk mode browser using XUL">
+<meta property="og:description" content="I volunteer at the Warren memorial library and was asked recently to create a Kiosk mode browser that could not be used to browse anything else except for the library's book catalog. I started exploring the various options available and soon settled on two browsers, Opera and Firefox, while it is fairly easy to setup opera in kiosk mode you still need to pay Opera for the professional version to make it work.That ruled out opera and I was left with Firefox.I started hunting around for an extension that would turn the Firefox browser into a locked down version where you could not navigate to any site. I downloaded the R-Kiosk extension this extension does a pretty decent job of locking down the browser.The extension disables most of the menu items and does a pretty good job in disabling the navigation bar and the address bar,but the extension fails to block the preferences menu item thus leaving a chink in its armor which can be exploited by anyone who is computer savvy. The person can use the preferences menu to set the home page to any desired site close preferences and hit alt+home on the keyboard to navigate to that page.
+For e.g if you wanted to restrict the patron from visiting any other site except for the library's own home page a malicious user could set the home page to something like www.google.com and navigate to any site from there. The author also claims that the extension can only be uninstalled from safe mode, but by going to http://addons.mozilla.com and installing any addon you still get access to the addons window and can uninstall the extension from there.
+In the end I found that the only way to circumvent these issues was to disable almost all the menu items, this was too much work which included hacking the perf.js file in the profiles folder so I decided to write a XUL widget instead.
+Here is the XUL code
+&lt;?xml version="1.0"?&gt;
+&lt;?xml-stylesheet href="chrome://global/skin/" type="text/css"?&gt;
+&lt;window
+id="google's Online catalog"
+title="googleOnline catalog"
+orient="horizontal"
+width="1000"
+height="768"
+xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+xmlns:html="http://www.w3.org/1999/xhtml"&gt;
+&lt;vbox flex="1"&gt;
+&lt;hbox pack="center"&gt;
+&lt;html:font face="verdana" color="blue"&gt;
+&lt;html:strong&gt;
+&lt;label value="Google's online catalog"/&gt;
+&lt;/html:strong&gt;
+&lt;/html:font&gt;
+&lt;/hbox&gt;
+&lt;hbox flex="1" orient="vertical"&gt;
+&lt;html:iframe src="http://books.google.com/" flex="1"&gt;&lt;/html:iframe&gt;
+&lt;/hbox&gt;
+&lt;/vbox&gt;
+&lt;/window&gt;
+PS: Copy pasting the code above will not work please download the code here, for some reason the code tag in wordpress does not work with XUL code :( properly. once you download the file from the above link rename the file from kiosk.doc to kiosk.xul.
+you can preview the above code in this excellent XUL live editor.
+
+On a Mac you can setup a restricted account, set it to auto login without password and then set Firefox to start this XUL file at login. to further prevent access to the OS install the profile password extension for Firefox. This is not an elegant solution but it got the job done.
+The XUL file can be started on login with the following command line typed into a shell script
+cd /
+cd Applications
+cd Firefox.app
+cd Contents
+cd MacOS
+./firefox -chrome /nameofxulfile.xul
+On a windows machine the default shell can be changed to something like Blackbox which is a minimal shell and can be used for the same purpose, but it isn't foolproof the only other way is to set the shell as Firefox which I haven't found a way to do yet.
+powered by performancing firefox
+
+
+">
+<meta property="og:url" content="http://harishbsrinivas.github.io/hacks/xul/kiosk-mode-browser-using-xul/">
+<meta property="og:site_name" content="TECH NOTES, RAMBLINGS & WHATNOTS">
+
+
+
+
+
+<link rel="canonical" href="http://harishbsrinivas.github.io/hacks/xul/kiosk-mode-browser-using-xul/">
+<link href="http://harishbsrinivas.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="TECH NOTES, RAMBLINGS & WHATNOTS Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://harishbsrinivas.github.io/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://harishbsrinivas.github.io/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://harishbsrinivas.github.io/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://harishbsrinivas.github.io/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://harishbsrinivas.github.io/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://harishbsrinivas.github.io/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://harishbsrinivas.github.io/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://harishbsrinivas.github.io/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://harishbsrinivas.github.io/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://harishbsrinivas.github.io/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://harishbsrinivas.github.io">TECH NOTES, RAMBLINGS & WHATNOTS</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+					    
+					        
+					        
+					    <li><a href="http://about.me/harishbsrinivas" target="_blank">About.me</a></li>
+					  
+					    
+					        
+					    
+					    <li><a href="http://harishbsrinivas.github.io/posts" >All Posts</a></li>
+					  
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+
+	<img src="http://harishbsrinivas.github.io/images/bio-photo.jpg" class="bio-photo" alt="Harish Srinivas bio photo"></a>
+
+<h3>Harish Srinivas</h3>
+<p>“Autodidact with an insatiable thirst for learning something new everyday. Wearer of many hats. DevOp Engineer/Release Engineer, Security Engineer, Linux fanatic, Amateur photographer, Maker & Novice App developer.”</p>
+<a href="mailto:harishbsrinivas@gmail.com" class="author-social" target="_blank"><i class="fa fa-envelope-square"></i> Email</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      
+        <h1><a href="http://harishbsrinivas.github.io/hacks/xul/kiosk-mode-browser-using-xul/" rel="bookmark" title="Kiosk mode browser using XUL">Kiosk mode browser using XUL</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p align="justify">I volunteer at the <a href="http://www.warren.lib.me.us/" target="_blank">Warren memorial library</a> and was asked recently to create a Kiosk mode browser that could not be used to browse anything else except for the library's book catalog. I started exploring the various options available and soon settled on two browsers, <a href="http://www.opera.com" target="_blank">Opera</a> and <a href="http://www.firefox.com" target="_blank">Firefox</a>, while it is fairly easy to setup opera in kiosk mode you still need to pay Opera for the professional version to make it work.That ruled out opera and I was left with Firefox.I started hunting around for an extension that would turn the Firefox browser into a locked down version where you could not navigate to any site. I downloaded the <a href="https://addons.mozilla.org/firefox/1659/" target="_blank">R-Kiosk</a> extension this extension does a pretty decent job of locking down the browser.The extension disables most of the menu items and does a pretty good job in disabling the navigation bar and the address bar,but the extension fails to block the preferences menu item thus leaving a chink in its armor which can be exploited by anyone who is computer savvy. The person can use the preferences menu to set the home page to any desired site close preferences and hit alt+home on the keyboard to navigate to that page.</p>
+<p>For e.g if you wanted to restrict the patron from visiting any other site except for the library's own home page a malicious user could set the home page to something like www.google.com and navigate to any site from there. The author also claims that the extension can only be uninstalled from safe mode, but by going to http://addons.mozilla.com and installing any addon you still get access to the addons window and can uninstall the extension from there.</p>
+<p>In the end I found that the only way to circumvent these issues was to disable almost all the menu items, this was too much work which included hacking the perf.js file in the profiles folder so I decided to write a XUL widget instead.</p>
+<p>Here is the XUL code</p>
+<pre>&lt;?xml version="1.0"?&gt;
+&lt;?xml-stylesheet href="chrome://global/skin/" type="text/css"?&gt;
+&lt;window
+id="google's Online catalog"
+title="googleOnline catalog"
+orient="horizontal"
+width="1000"
+height="768"
+xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+xmlns:html="http://www.w3.org/1999/xhtml"&gt;
+&lt;vbox flex="1"&gt;
+&lt;hbox pack="center"&gt;
+&lt;html:font face="verdana" color="blue"&gt;
+&lt;html:strong&gt;
+&lt;label value="Google's online catalog"/&gt;
+&lt;/html:strong&gt;
+&lt;/html:font&gt;
+&lt;/hbox&gt;
+&lt;hbox flex="1" orient="vertical"&gt;
+&lt;html:iframe src="http://books.google.com/" flex="1"&gt;&lt;/html:iframe&gt;
+&lt;/hbox&gt;
+&lt;/vbox&gt;
+&lt;/window&gt;</pre>
+<p><span style="color:#ff0000;">PS: Copy pasting the code above will not work please <a title="kiosk.doc" href="http://cerberos.local/tesla/wp-content/uploads/2007/05/kiosk.doc">download the code here</a>, for some reason the code tag in wordpress does not work with XUL code :( properly. once you download the file from the above link rename the file from kiosk.doc to kiosk.xul.</span></p>
+<p>you can preview the above code in this excellent <a href="http://ted.mielczarek.org/code/mozilla/xuledit/xuledit.xul">XUL live editor.</a></p>
+<p style="text-align:center;"><a title="googlexul.jpg" href="http://cerberos.local/tesla/wp-content/uploads/2006/11/googlexul.jpg"><img alt="googlexul.jpg" src="assets/googlexul.jpg" width="300" height="436" /></a></p>
+<p>On a Mac you can setup a restricted account, set it to auto login without password and then set Firefox to start this XUL file at login. to further prevent access to the OS install the profile password extension for Firefox. This is not an elegant solution but it got the job done.</p>
+<p>The XUL file can be started on login with the following command line typed into a shell script</p>
+<pre>cd /
+cd Applications
+cd Firefox.app
+cd Contents
+cd MacOS
+./firefox -chrome /nameofxulfile.xul</pre>
+<p>On a windows machine the default shell can be changed to something like <a href="http://www.bb4win.org/news.php" target="_blank">Blackbox</a> which is a minimal shell and can be used for the same purpose, but it isn't foolproof the only other way is to set the shell as Firefox which I haven't found a way to do yet.</p>
+<p class="poweredbyperformancing">powered by <a href="http://performancing.com/firefox">performancing firefox</a></p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          
+
+
+
+	<img src="http://harishbsrinivas.github.io/images/bio-photo.jpg" class="bio-photo" alt="Harish Srinivas bio photo"></a>
+
+<h3>Harish Srinivas</h3>
+<p>“Autodidact with an insatiable thirst for learning something new everyday. Wearer of many hats. DevOp Engineer/Release Engineer, Security Engineer, Linux fanatic, Amateur photographer, Maker & Novice App developer.”</p>
+<a href="mailto:harishbsrinivas@gmail.com" class="author-social" target="_blank"><i class="fa fa-envelope-square"></i> Email</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>Kiosk mode browser using XUL</strong> was published on <time datetime="2006-11-17T11:49:53-05:00">November 17, 2006</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://harishbsrinivas.github.io/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://harishbsrinivas.github.io/automated-deployments-with-docker-ansible-go/" title="Automated deployments with Docker, Ansible & Go (Part 1 of N)">Automated deployments with Docker, Ansible & Go (Part 1 of N)</a></li>
+    
+      <li><a href="http://harishbsrinivas.github.io/changing-hostname-of-your-mac-from-the-t/" title="Changing hostname of your mac from the t">Changing hostname of your mac from the t</a></li>
+    
+      <li><a href="http://harishbsrinivas.github.io/hacks/photography/technology/automating-date-change-on-flickr-photos-with-sikulix/" title="Automating date change on Flickr photos with SikuliX">Automating date change on Flickr photos with SikuliX</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    <div class="google-ads">
+  <!-- 320 x 50 ad -->
+  <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <ins class="adsbygoogle"
+       style="display:inline-block;width:320px;height:50px"
+       data-ad-client=""
+       data-ad-slot=""></ins>
+  <script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div><!-- /.google-ads -->
+
+<span>&copy; 2014 Harish Srinivas. Powered by <a href="http://jekyllrb.com">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://harishbsrinivas.github.io/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://harishbsrinivas.github.io/assets/js/scripts.min.js"></script>
+
+	        
+
+</body>
+</html>

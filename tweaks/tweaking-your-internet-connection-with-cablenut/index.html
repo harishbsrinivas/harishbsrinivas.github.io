@@ -1,0 +1,234 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Tweaking your internet connection with cablenut &#8211; TECH NOTES, RAMBLINGS & WHATNOTS</title>
+<meta name="description" content="
+click on image to view actual size
+Cablenut is a small windows utility that can be used to tweak some internal register settings (MTU buffers for the nit picky) inside windows to increase the Internet connection speed.
+you can download the Cablenut software here,there is an online configurator that can take in values and generate a config file here.or you can just select your type of connection from the cablenut wizard .
+warning: Fiddling with the registry might prove to be disastrous if you don't know what you are doing so be careful. Any thing you choose to do by following this article will be at your own risk.
+
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Tweaking your internet connection with cablenut">
+<meta name="twitter:description" content="
+click on image to view actual size
+Cablenut is a small windows utility that can be used to tweak some internal register settings (MTU buffers for the nit picky) inside windows to increase the Internet connection speed.
+you can download the Cablenut software here,there is an online configurator that can take in values and generate a config file here.or you can just select your type of connection from the cablenut wizard .
+warning: Fiddling with the registry might prove to be disastrous if you don't know what you are doing so be careful. Any thing you choose to do by following this article will be at your own risk.
+
+
+">
+
+
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://harishbsrinivas.github.io/images/default-thumb.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tweaking your internet connection with cablenut">
+<meta property="og:description" content="
+click on image to view actual size
+Cablenut is a small windows utility that can be used to tweak some internal register settings (MTU buffers for the nit picky) inside windows to increase the Internet connection speed.
+you can download the Cablenut software here,there is an online configurator that can take in values and generate a config file here.or you can just select your type of connection from the cablenut wizard .
+warning: Fiddling with the registry might prove to be disastrous if you don't know what you are doing so be careful. Any thing you choose to do by following this article will be at your own risk.
+
+
+">
+<meta property="og:url" content="http://harishbsrinivas.github.io/tweaks/tweaking-your-internet-connection-with-cablenut/">
+<meta property="og:site_name" content="TECH NOTES, RAMBLINGS & WHATNOTS">
+
+
+
+
+
+<link rel="canonical" href="http://harishbsrinivas.github.io/tweaks/tweaking-your-internet-connection-with-cablenut/">
+<link href="http://harishbsrinivas.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="TECH NOTES, RAMBLINGS & WHATNOTS Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://harishbsrinivas.github.io/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://harishbsrinivas.github.io/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://harishbsrinivas.github.io/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://harishbsrinivas.github.io/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://harishbsrinivas.github.io/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://harishbsrinivas.github.io/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://harishbsrinivas.github.io/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://harishbsrinivas.github.io/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://harishbsrinivas.github.io/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://harishbsrinivas.github.io/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://harishbsrinivas.github.io">TECH NOTES, RAMBLINGS & WHATNOTS</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+					    
+					        
+					        
+					    <li><a href="http://about.me/harishbsrinivas" target="_blank">About.me</a></li>
+					  
+					    
+					        
+					    
+					    <li><a href="http://harishbsrinivas.github.io/posts" >All Posts</a></li>
+					  
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+
+	<img src="http://harishbsrinivas.github.io/images/bio-photo.jpg" class="bio-photo" alt="Harish Srinivas bio photo"></a>
+
+<h3>Harish Srinivas</h3>
+<p>“Autodidact with an insatiable thirst for learning something new everyday. Wearer of many hats. DevOp Engineer/Release Engineer, Security Engineer, Linux fanatic, Amateur photographer, Maker & Novice App developer.”</p>
+<a href="mailto:harishbsrinivas@gmail.com" class="author-social" target="_blank"><i class="fa fa-envelope-square"></i> Email</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      
+        <h1><a href="http://harishbsrinivas.github.io/tweaks/tweaking-your-internet-connection-with-cablenut/" rel="bookmark" title="Tweaking your internet connection with cablenut">Tweaking your internet connection with cablenut</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p><a href="http://dslnuts.com/images/w98af.gif"><img alt="" src="assets/w98af.gif" width="399" height="399" border="0" /></a></p>
+<p><span style="font-size:78%;">click on image to view actual size</span></p>
+<p>Cablenut is a small windows utility that can be used to tweak some internal register settings (MTU buffers for the nit picky) inside windows to increase the Internet connection speed.</p>
+<p>you can download the Cablenut software <a href="http://dslnuts.com/software.shtml">here</a>,there is an online configurator that can take in values and generate a config file <a href="http://www.j79zlr.com/cablenutXP2k.php#">here</a>.or you can just select your type of connection from the cablenut wizard .</p>
+<p>warning: Fiddling with the registry might prove to be disastrous if you don't know what you are doing so be careful. Any thing you choose to do by following this article will be at your own risk.</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          
+
+
+
+	<img src="http://harishbsrinivas.github.io/images/bio-photo.jpg" class="bio-photo" alt="Harish Srinivas bio photo"></a>
+
+<h3>Harish Srinivas</h3>
+<p>“Autodidact with an insatiable thirst for learning something new everyday. Wearer of many hats. DevOp Engineer/Release Engineer, Security Engineer, Linux fanatic, Amateur photographer, Maker & Novice App developer.”</p>
+<a href="mailto:harishbsrinivas@gmail.com" class="author-social" target="_blank"><i class="fa fa-envelope-square"></i> Email</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>Tweaking your internet connection with cablenut</strong> was published on <time datetime="2005-01-19T06:20:23-05:00">January 19, 2005</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://harishbsrinivas.github.io/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://harishbsrinivas.github.io/automated-deployments-with-docker-ansible-go/" title="Automated deployments with Docker, Ansible & Go (Part 1 of N)">Automated deployments with Docker, Ansible & Go (Part 1 of N)</a></li>
+    
+      <li><a href="http://harishbsrinivas.github.io/changing-hostname-of-your-mac-from-the-t/" title="Changing hostname of your mac from the t">Changing hostname of your mac from the t</a></li>
+    
+      <li><a href="http://harishbsrinivas.github.io/hacks/photography/technology/automating-date-change-on-flickr-photos-with-sikulix/" title="Automating date change on Flickr photos with SikuliX">Automating date change on Flickr photos with SikuliX</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    <div class="google-ads">
+  <!-- 320 x 50 ad -->
+  <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <ins class="adsbygoogle"
+       style="display:inline-block;width:320px;height:50px"
+       data-ad-client=""
+       data-ad-slot=""></ins>
+  <script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div><!-- /.google-ads -->
+
+<span>&copy; 2014 Harish Srinivas. Powered by <a href="http://jekyllrb.com">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://harishbsrinivas.github.io/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://harishbsrinivas.github.io/assets/js/scripts.min.js"></script>
+
+	        
+
+</body>
+</html>

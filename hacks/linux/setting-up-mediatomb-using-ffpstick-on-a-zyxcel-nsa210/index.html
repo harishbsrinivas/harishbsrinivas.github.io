@@ -1,0 +1,326 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Setting up mediatomb using ffpstick on a Zyxcel NSA210 &#8211; TECH NOTES, RAMBLINGS & WHATNOTS</title>
+<meta name="description" content="
+Download FFPStick 0.5 from here
+Format a USB stick with FAT16, extract the contents of the FFPStick Archive you downloaded on the the root of the USB stick.
+Shutdown the NSA210, Plug in the USB stick and reboot
+wait for 2 minutes and then login to the box via telnet
+change root password, delete account called "user"
+start ssh with
+chmod a+x /ffp/start/sshd.sh
+/ffp/start/sshd.sh start
+
+logout from telnet and log back in via ssh, login as root with the newly changed password.
+stop telnet and then disable telnet service using commands
+chmod -x /ff/start/telnetd.sh
+/ffp/start/telnet.sh stop
+
+Start mediatomb to create the initial config file by using the command
+chmod -x /ff/start/mediatomb.sh
+/ffp/start/mediatomb.sh start
+
+Wait for 30 seconds and then issue the stop command to stop mediatomb
+/ffp/start/mediatomb.sh stop
+
+Customize the /ffp/var/mediatomb/config.xml file
+Start mediatomb again, navigate to http://cerberos:49152 and begin adding media to database.
+To remove the listing for PC directory add the following line under &lt;server&gt;
+ &lt;pc-directory upnp-hide=”yes”/&gt;
+Verify that the upnp server is reachable using the client on a droid or using enna or moovida.
+
+
+
+">
+<meta name="keywords" content="dlna, mediatomb, NSA210">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Setting up mediatomb using ffpstick on a Zyxcel NSA210">
+<meta name="twitter:description" content="
+Download FFPStick 0.5 from here
+Format a USB stick with FAT16, extract the contents of the FFPStick Archive you downloaded on the the root of the USB stick.
+Shutdown the NSA210, Plug in the USB stick and reboot
+wait for 2 minutes and then login to the box via telnet
+change root password, delete account called "user"
+start ssh with
+chmod a+x /ffp/start/sshd.sh
+/ffp/start/sshd.sh start
+
+logout from telnet and log back in via ssh, login as root with the newly changed password.
+stop telnet and then disable telnet service using commands
+chmod -x /ff/start/telnetd.sh
+/ffp/start/telnet.sh stop
+
+Start mediatomb to create the initial config file by using the command
+chmod -x /ff/start/mediatomb.sh
+/ffp/start/mediatomb.sh start
+
+Wait for 30 seconds and then issue the stop command to stop mediatomb
+/ffp/start/mediatomb.sh stop
+
+Customize the /ffp/var/mediatomb/config.xml file
+Start mediatomb again, navigate to http://cerberos:49152 and begin adding media to database.
+To remove the listing for PC directory add the following line under &lt;server&gt;
+ &lt;pc-directory upnp-hide=”yes”/&gt;
+Verify that the upnp server is reachable using the client on a droid or using enna or moovida.
+
+
+
+">
+
+
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://harishbsrinivas.github.io/images/default-thumb.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Setting up mediatomb using ffpstick on a Zyxcel NSA210">
+<meta property="og:description" content="
+Download FFPStick 0.5 from here
+Format a USB stick with FAT16, extract the contents of the FFPStick Archive you downloaded on the the root of the USB stick.
+Shutdown the NSA210, Plug in the USB stick and reboot
+wait for 2 minutes and then login to the box via telnet
+change root password, delete account called "user"
+start ssh with
+chmod a+x /ffp/start/sshd.sh
+/ffp/start/sshd.sh start
+
+logout from telnet and log back in via ssh, login as root with the newly changed password.
+stop telnet and then disable telnet service using commands
+chmod -x /ff/start/telnetd.sh
+/ffp/start/telnet.sh stop
+
+Start mediatomb to create the initial config file by using the command
+chmod -x /ff/start/mediatomb.sh
+/ffp/start/mediatomb.sh start
+
+Wait for 30 seconds and then issue the stop command to stop mediatomb
+/ffp/start/mediatomb.sh stop
+
+Customize the /ffp/var/mediatomb/config.xml file
+Start mediatomb again, navigate to http://cerberos:49152 and begin adding media to database.
+To remove the listing for PC directory add the following line under &lt;server&gt;
+ &lt;pc-directory upnp-hide=”yes”/&gt;
+Verify that the upnp server is reachable using the client on a droid or using enna or moovida.
+
+
+
+">
+<meta property="og:url" content="http://harishbsrinivas.github.io/hacks/linux/setting-up-mediatomb-using-ffpstick-on-a-zyxcel-nsa210/">
+<meta property="og:site_name" content="TECH NOTES, RAMBLINGS & WHATNOTS">
+
+
+
+
+
+<link rel="canonical" href="http://harishbsrinivas.github.io/hacks/linux/setting-up-mediatomb-using-ffpstick-on-a-zyxcel-nsa210/">
+<link href="http://harishbsrinivas.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="TECH NOTES, RAMBLINGS & WHATNOTS Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://harishbsrinivas.github.io/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://harishbsrinivas.github.io/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://harishbsrinivas.github.io/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://harishbsrinivas.github.io/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://harishbsrinivas.github.io/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://harishbsrinivas.github.io/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://harishbsrinivas.github.io/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://harishbsrinivas.github.io/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://harishbsrinivas.github.io/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://harishbsrinivas.github.io/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://harishbsrinivas.github.io">TECH NOTES, RAMBLINGS & WHATNOTS</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+					    
+					        
+					        
+					    <li><a href="http://about.me/harishbsrinivas" target="_blank">About.me</a></li>
+					  
+					    
+					        
+					    
+					    <li><a href="http://harishbsrinivas.github.io/posts" >All Posts</a></li>
+					  
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+
+	<img src="http://harishbsrinivas.github.io/images/bio-photo.jpg" class="bio-photo" alt="Harish Srinivas bio photo"></a>
+
+<h3>Harish Srinivas</h3>
+<p>“Autodidact with an insatiable thirst for learning something new everyday. Wearer of many hats. DevOp Engineer/Release Engineer, Security Engineer, Linux fanatic, Amateur photographer, Maker & Novice App developer.”</p>
+<a href="mailto:harishbsrinivas@gmail.com" class="author-social" target="_blank"><i class="fa fa-envelope-square"></i> Email</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      
+        <h1><a href="http://harishbsrinivas.github.io/hacks/linux/setting-up-mediatomb-using-ffpstick-on-a-zyxcel-nsa210/" rel="bookmark" title="Setting up mediatomb using ffpstick on a Zyxcel NSA210">Setting up mediatomb using ffpstick on a Zyxcel NSA210</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <ol>
+<li>Download FFPStick 0.5 from <a title="FFPStick" href="http://zyxel.nas-central.org/wiki/FFP-stick" target="_blank">here</a></li>
+<li>Format a USB stick with FAT16, extract the contents of the FFPStick Archive you downloaded on the the root of the USB stick.</li>
+<li>Shutdown the NSA210, Plug in the USB stick and reboot</li>
+<li>wait for 2 minutes and then login to the box via telnet</li>
+<li>change root password, delete account called "user"</li>
+<li>start ssh with
+<pre>chmod a+x /ffp/start/sshd.sh
+/ffp/start/sshd.sh start</pre>
+</li>
+<li>logout from telnet and log back in via ssh, login as root with the newly changed password.</li>
+<li>stop telnet and then disable telnet service using commands
+<pre>chmod -x /ff/start/telnetd.sh
+/ffp/start/telnet.sh stop</pre>
+</li>
+<li>Start mediatomb to create the initial config file by using the command
+<pre>chmod -x /ff/start/mediatomb.sh
+/ffp/start/mediatomb.sh start</pre>
+</li>
+<li>Wait for 30 seconds and then issue the stop command to stop mediatomb
+<pre>/ffp/start/mediatomb.sh stop</pre>
+</li>
+<li>Customize the /ffp/var/mediatomb/config.xml file</li>
+<li>Start mediatomb again, navigate to http://cerberos:49152 and begin adding media to database.</li>
+<li>To remove the listing for PC directory add the following line under &lt;server&gt;<br />
+<em> &lt;pc-directory upnp-hide=”yes”/&gt;</em></li>
+<li>Verify that the upnp server is reachable using the client on a droid or using enna or moovida.</li>
+</ol>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          
+
+
+
+	<img src="http://harishbsrinivas.github.io/images/bio-photo.jpg" class="bio-photo" alt="Harish Srinivas bio photo"></a>
+
+<h3>Harish Srinivas</h3>
+<p>“Autodidact with an insatiable thirst for learning something new everyday. Wearer of many hats. DevOp Engineer/Release Engineer, Security Engineer, Linux fanatic, Amateur photographer, Maker & Novice App developer.”</p>
+<a href="mailto:harishbsrinivas@gmail.com" class="author-social" target="_blank"><i class="fa fa-envelope-square"></i> Email</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>Setting up mediatomb using ffpstick on a Zyxcel NSA210</strong> was published on <time datetime="2010-12-17T19:38:01-05:00">December 17, 2010</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://harishbsrinivas.github.io/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://harishbsrinivas.github.io/automated-deployments-with-docker-ansible-go/" title="Automated deployments with Docker, Ansible & Go (Part 1 of N)">Automated deployments with Docker, Ansible & Go (Part 1 of N)</a></li>
+    
+      <li><a href="http://harishbsrinivas.github.io/changing-hostname-of-your-mac-from-the-t/" title="Changing hostname of your mac from the t">Changing hostname of your mac from the t</a></li>
+    
+      <li><a href="http://harishbsrinivas.github.io/hacks/photography/technology/automating-date-change-on-flickr-photos-with-sikulix/" title="Automating date change on Flickr photos with SikuliX">Automating date change on Flickr photos with SikuliX</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    <div class="google-ads">
+  <!-- 320 x 50 ad -->
+  <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <ins class="adsbygoogle"
+       style="display:inline-block;width:320px;height:50px"
+       data-ad-client=""
+       data-ad-slot=""></ins>
+  <script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div><!-- /.google-ads -->
+
+<span>&copy; 2014 Harish Srinivas. Powered by <a href="http://jekyllrb.com">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://harishbsrinivas.github.io/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://harishbsrinivas.github.io/assets/js/scripts.min.js"></script>
+
+	        
+
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>PLUA programming tutorial &#8211; TECH NOTES, RAMBLINGS & WHATNOTS</title>
+<meta name="description" content="here is the commented version of the PLUA program I posted yesterday
+ptitle("simple calc")
+will display the label of the current form as simple calc
+pmoveto(10,55)
+move to position 10(x),55(y)
+text1=pfield(1,7,20)
+store the Id of the text filed in variable text1,the text filed will have be of one line having 7 columns and a maximum of 20 characters
+print("+")
+print "+"
+pmoveto(105,55)
+move to position 105(x),55(y)
+text2=pfield(1,7,20)
+store the Id of the text filed in variable text2,the text filed will have be of one line having 7 columns and a maximum of 20 characters
+print("=")
+print "="
+pmoveto(195,55)
+move to position 195(x),55(y)
+text3=pfield(1,7,20,"",1,1)
+store the Id of the text filed in variable text3,the text filed will have be of one line having 7 columns and a maximum of 20 characters,initialize the field with an empty string("") and make the filed non editable(1) and not underlined(1)
+pmoveto(50,100)
+move to position 50(x),100(y)
+addButton=pbutton("add")
+store the ID of the button with label add in a variable called addButton
+clrButton=pbutton("clear")
+store the ID of the button with label clear in a variable called clrButton
+exitButton=pbutton("exit")
+store the ID of the button with label exit in a variable called exitButton
+psetfocus(text1)
+set focus to textfield1 so that when program runs the filed is already selected
+while 1 do
+go into an infinite loop until an event occurs I.E. a button is clicked
+e,id = pevent()
+function pevent() waits for an event and returns the ID and the type of event it encountered which are then stored in variables' e' and 'id'
+if e == ctlSelect and id == addButton then
+compare to see if the event is the add button is clicked if it is then add the contents of text filed 1 and 2 and display the result in text filed 3
+psettext(text3,(pgettext(text1)+pgettext(text2)))
+psettext is used to put in text in textfield 3,pgettext returns the contents of the selected object in this case contents of text filed 1 and 2
+end
+end if loop
+if e == ctlSelect and id == exitButton then
+compare to see if the event is the exit button is clicked if it is then pop up a confirmation box to determine of user really wants to quit
+if(pconfirm("do you really want to quit?")) then
+the Pconfirm() function pop's up a dialog with a question and yes and no buttons if yes is selected then 1 is returned else 0 is returned
+break
+break exits the while loop thus ending the program
+end
+end of if condition for pop up
+end
+end of if condition
+if e == ctlSelect and id == clrButton then
+compare to see if the event is the clear button is clicked if it is then clear all three text fields
+psettext(text1," ")
+psettext(text2," ")
+psettext(text3," ")
+psettext sets the content of the ID supplied with a given string in this case with an empty string.
+end
+end of while
+end
+end of main function
+
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="PLUA programming tutorial">
+<meta name="twitter:description" content="here is the commented version of the PLUA program I posted yesterday
+ptitle("simple calc")
+will display the label of the current form as simple calc
+pmoveto(10,55)
+move to position 10(x),55(y)
+text1=pfield(1,7,20)
+store the Id of the text filed in variable text1,the text filed will have be of one line having 7 columns and a maximum of 20 characters
+print("+")
+print "+"
+pmoveto(105,55)
+move to position 105(x),55(y)
+text2=pfield(1,7,20)
+store the Id of the text filed in variable text2,the text filed will have be of one line having 7 columns and a maximum of 20 characters
+print("=")
+print "="
+pmoveto(195,55)
+move to position 195(x),55(y)
+text3=pfield(1,7,20,"",1,1)
+store the Id of the text filed in variable text3,the text filed will have be of one line having 7 columns and a maximum of 20 characters,initialize the field with an empty string("") and make the filed non editable(1) and not underlined(1)
+pmoveto(50,100)
+move to position 50(x),100(y)
+addButton=pbutton("add")
+store the ID of the button with label add in a variable called addButton
+clrButton=pbutton("clear")
+store the ID of the button with label clear in a variable called clrButton
+exitButton=pbutton("exit")
+store the ID of the button with label exit in a variable called exitButton
+psetfocus(text1)
+set focus to textfield1 so that when program runs the filed is already selected
+while 1 do
+go into an infinite loop until an event occurs I.E. a button is clicked
+e,id = pevent()
+function pevent() waits for an event and returns the ID and the type of event it encountered which are then stored in variables' e' and 'id'
+if e == ctlSelect and id == addButton then
+compare to see if the event is the add button is clicked if it is then add the contents of text filed 1 and 2 and display the result in text filed 3
+psettext(text3,(pgettext(text1)+pgettext(text2)))
+psettext is used to put in text in textfield 3,pgettext returns the contents of the selected object in this case contents of text filed 1 and 2
+end
+end if loop
+if e == ctlSelect and id == exitButton then
+compare to see if the event is the exit button is clicked if it is then pop up a confirmation box to determine of user really wants to quit
+if(pconfirm("do you really want to quit?")) then
+the Pconfirm() function pop's up a dialog with a question and yes and no buttons if yes is selected then 1 is returned else 0 is returned
+break
+break exits the while loop thus ending the program
+end
+end of if condition for pop up
+end
+end of if condition
+if e == ctlSelect and id == clrButton then
+compare to see if the event is the clear button is clicked if it is then clear all three text fields
+psettext(text1," ")
+psettext(text2," ")
+psettext(text3," ")
+psettext sets the content of the ID supplied with a given string in this case with an empty string.
+end
+end of while
+end
+end of main function
+
+
+">
+
+
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://harishbsrinivas.github.io/images/default-thumb.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PLUA programming tutorial">
+<meta property="og:description" content="here is the commented version of the PLUA program I posted yesterday
+ptitle("simple calc")
+will display the label of the current form as simple calc
+pmoveto(10,55)
+move to position 10(x),55(y)
+text1=pfield(1,7,20)
+store the Id of the text filed in variable text1,the text filed will have be of one line having 7 columns and a maximum of 20 characters
+print("+")
+print "+"
+pmoveto(105,55)
+move to position 105(x),55(y)
+text2=pfield(1,7,20)
+store the Id of the text filed in variable text2,the text filed will have be of one line having 7 columns and a maximum of 20 characters
+print("=")
+print "="
+pmoveto(195,55)
+move to position 195(x),55(y)
+text3=pfield(1,7,20,"",1,1)
+store the Id of the text filed in variable text3,the text filed will have be of one line having 7 columns and a maximum of 20 characters,initialize the field with an empty string("") and make the filed non editable(1) and not underlined(1)
+pmoveto(50,100)
+move to position 50(x),100(y)
+addButton=pbutton("add")
+store the ID of the button with label add in a variable called addButton
+clrButton=pbutton("clear")
+store the ID of the button with label clear in a variable called clrButton
+exitButton=pbutton("exit")
+store the ID of the button with label exit in a variable called exitButton
+psetfocus(text1)
+set focus to textfield1 so that when program runs the filed is already selected
+while 1 do
+go into an infinite loop until an event occurs I.E. a button is clicked
+e,id = pevent()
+function pevent() waits for an event and returns the ID and the type of event it encountered which are then stored in variables' e' and 'id'
+if e == ctlSelect and id == addButton then
+compare to see if the event is the add button is clicked if it is then add the contents of text filed 1 and 2 and display the result in text filed 3
+psettext(text3,(pgettext(text1)+pgettext(text2)))
+psettext is used to put in text in textfield 3,pgettext returns the contents of the selected object in this case contents of text filed 1 and 2
+end
+end if loop
+if e == ctlSelect and id == exitButton then
+compare to see if the event is the exit button is clicked if it is then pop up a confirmation box to determine of user really wants to quit
+if(pconfirm("do you really want to quit?")) then
+the Pconfirm() function pop's up a dialog with a question and yes and no buttons if yes is selected then 1 is returned else 0 is returned
+break
+break exits the while loop thus ending the program
+end
+end of if condition for pop up
+end
+end of if condition
+if e == ctlSelect and id == clrButton then
+compare to see if the event is the clear button is clicked if it is then clear all three text fields
+psettext(text1," ")
+psettext(text2," ")
+psettext(text3," ")
+psettext sets the content of the ID supplied with a given string in this case with an empty string.
+end
+end of while
+end
+end of main function
+
+
+">
+<meta property="og:url" content="http://harishbsrinivas.github.io/code/programming/plua-programming-tutorial/">
+<meta property="og:site_name" content="TECH NOTES, RAMBLINGS & WHATNOTS">
+
+
+
+
+
+<link rel="canonical" href="http://harishbsrinivas.github.io/code/programming/plua-programming-tutorial/">
+<link href="http://harishbsrinivas.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="TECH NOTES, RAMBLINGS & WHATNOTS Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://harishbsrinivas.github.io/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://harishbsrinivas.github.io/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://harishbsrinivas.github.io/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://harishbsrinivas.github.io/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://harishbsrinivas.github.io/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://harishbsrinivas.github.io/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://harishbsrinivas.github.io/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://harishbsrinivas.github.io/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://harishbsrinivas.github.io/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://harishbsrinivas.github.io/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://harishbsrinivas.github.io">TECH NOTES, RAMBLINGS & WHATNOTS</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+					    
+					        
+					        
+					    <li><a href="http://about.me/harishbsrinivas" target="_blank">About.me</a></li>
+					  
+					    
+					        
+					    
+					    <li><a href="http://harishbsrinivas.github.io/posts" >All Posts</a></li>
+					  
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+
+	<img src="http://harishbsrinivas.github.io/images/bio-photo.jpg" class="bio-photo" alt="Harish Srinivas bio photo"></a>
+
+<h3>Harish Srinivas</h3>
+<p>“Autodidact with an insatiable thirst for learning something new everyday. Wearer of many hats. DevOp Engineer/Release Engineer, Security Engineer, Linux fanatic, Amateur photographer, Maker & Novice App developer.”</p>
+<a href="mailto:harishbsrinivas@gmail.com" class="author-social" target="_blank"><i class="fa fa-envelope-square"></i> Email</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      
+        <h1><a href="http://harishbsrinivas.github.io/code/programming/plua-programming-tutorial/" rel="bookmark" title="PLUA programming tutorial">PLUA programming tutorial</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>here is the commented version of the PLUA program I posted yesterday<br />
+ptitle("simple calc")<br />
+<span style="color:#6666cc;">will display the label of the current form as simple calc</span><br />
+pmoveto(10,55)<br />
+<span style="color:#6666cc;">move to position</span> 10(x),55(y)<br />
+text1=pfield(1,7,20)<br />
+<span style="color:#6666cc;">store the Id of the text filed in variable text1,the text filed will have be of one line having 7 columns and a maximum of 20 characters</span><br />
+print("+")<br />
+<span style="color:#6666cc;">print "+"</span><br />
+pmoveto(105,55)<br />
+<span style="color:#6666cc;">move to position</span> 105(x),55(y)<br />
+text2=pfield(1,7,20)<br />
+<span style="color:#6666cc;">store the Id of the text filed in variable text2,the text filed will have be of one line having 7 columns and a maximum of 20 characters</span><br />
+print("=")<br />
+<span style="color:#6666cc;">print "="</span><br />
+pmoveto(195,55)<br />
+<span style="color:#6666cc;">move to position</span> 195(x),55(y)<br />
+text3=pfield(1,7,20,"",1,1)<br />
+<span style="color:#6666cc;">store the Id of the text filed in variable text3,the text filed will have be of one line having 7 columns and a maximum of 20 characters</span>,initialize the field with an empty string("") and make the filed non editable(1) and not underlined(1)<br />
+pmoveto(50,100)<br />
+<span style="color:#6666cc;">move to position</span> 50(x),100(y)<br />
+addButton=pbutton("add")<br />
+<span style="color:#6666cc;">store the ID of the button with label add in a variable called addButton</span><br />
+clrButton=pbutton("clear")<br />
+<span style="color:#6666cc;">store the ID of the button with label clear in a variable called clrButton</span><br />
+exitButton=pbutton("exit")<br />
+<span style="color:#6666cc;">store the ID of the button with label exit in a variable called exitButton</span><br />
+psetfocus(text1)<br />
+<span style="color:#6666cc;">set focus to textfield</span>1 so that when program runs the filed is already selected<br />
+while 1 do<br />
+<span style="color:#6666cc;">go into an infinite loop until an event occurs</span> I.E. a button is clicked<br />
+e,id = pevent()<br />
+<span style="color:#6666cc;">function pevent</span>() waits for an event and returns the ID and the type of event it encountered which are then stored in variables' e' and 'id'<br />
+if e == ctlSelect and id == addButton then<br />
+<span style="color:#6666cc;">compare to see if the event is the add button is clicked if it is then add the contents of text filed 1 and 2 and display</span> the result in text filed 3<br />
+psettext(text3,(pgettext(text1)+pgettext(text2)))<br />
+<span style="color:#6666cc;">psettext</span> is used to put in text in textfield 3,pgettext returns the contents of the selected object in this case contents of text filed 1 and 2<br />
+end<br />
+<span style="color:#6666cc;">end if loop</span><br />
+if e == ctlSelect and id == exitButton then<br />
+<span style="color:#6666cc;">compare to see if the event is the exit button is clicked if it is then pop up a confirmation</span> box to determine of user really wants to quit<br />
+if(pconfirm("do you really want to quit?")) then<br />
+<span style="color:#6666cc;">the Pconfirm</span>() function pop's up a dialog with a question and yes and no buttons if yes is selected then 1 is returned else 0 is returned<br />
+break<br />
+<span style="color:#6666cc;">break exits the while loop thus ending the program</span><br />
+end<br />
+<span style="color:#6666cc;">end of if condition for pop up</span><br />
+end<br />
+<span style="color:#6666cc;">end of if condition</span><br />
+if e == ctlSelect and id == clrButton then<br />
+<span style="color:#6666cc;">compare to see if the event is the clear button is clicked if it is then clear all three text fields</span><br />
+psettext(text1," ")<br />
+psettext(text2," ")<br />
+psettext(text3," ")<br />
+<span style="color:#6666cc;">psettext</span> sets the content of the ID supplied with a given string in this case with an empty string.<br />
+end<br />
+<span style="color:#6666cc;">end of while</span><br />
+end<br />
+<span style="color:#6666cc;">end of main function</span></p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          
+
+
+
+	<img src="http://harishbsrinivas.github.io/images/bio-photo.jpg" class="bio-photo" alt="Harish Srinivas bio photo"></a>
+
+<h3>Harish Srinivas</h3>
+<p>“Autodidact with an insatiable thirst for learning something new everyday. Wearer of many hats. DevOp Engineer/Release Engineer, Security Engineer, Linux fanatic, Amateur photographer, Maker & Novice App developer.”</p>
+<a href="mailto:harishbsrinivas@gmail.com" class="author-social" target="_blank"><i class="fa fa-envelope-square"></i> Email</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>PLUA programming tutorial</strong> was published on <time datetime="2005-01-07T05:03:54-05:00">January 07, 2005</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://harishbsrinivas.github.io/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://harishbsrinivas.github.io/automated-deployments-with-docker-ansible-go/" title="Automated deployments with Docker, Ansible & Go (Part 1 of N)">Automated deployments with Docker, Ansible & Go (Part 1 of N)</a></li>
+    
+      <li><a href="http://harishbsrinivas.github.io/changing-hostname-of-your-mac-from-the-t/" title="Changing hostname of your mac from the t">Changing hostname of your mac from the t</a></li>
+    
+      <li><a href="http://harishbsrinivas.github.io/hacks/photography/technology/automating-date-change-on-flickr-photos-with-sikulix/" title="Automating date change on Flickr photos with SikuliX">Automating date change on Flickr photos with SikuliX</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    <div class="google-ads">
+  <!-- 320 x 50 ad -->
+  <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <ins class="adsbygoogle"
+       style="display:inline-block;width:320px;height:50px"
+       data-ad-client=""
+       data-ad-slot=""></ins>
+  <script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div><!-- /.google-ads -->
+
+<span>&copy; 2014 Harish Srinivas. Powered by <a href="http://jekyllrb.com">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://harishbsrinivas.github.io/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://harishbsrinivas.github.io/assets/js/scripts.min.js"></script>
+
+	        
+
+</body>
+</html>

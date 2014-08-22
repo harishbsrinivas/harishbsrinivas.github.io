@@ -1,0 +1,704 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+<title type="text">TECH NOTES, RAMBLINGS & WHATNOTS</title>
+<generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
+<link rel="self" type="application/atom+xml" href="http://harishbsrinivas.github.io/feed.xml" />
+<link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io" />
+<updated>2014-08-21T22:45:33-04:00</updated>
+<id>http://harishbsrinivas.github.io/</id>
+<author>
+  <name>Harish Srinivas</name>
+  <uri>http://harishbsrinivas.github.io/</uri>
+  <email>harishbsrinivas@gmail.com</email>
+</author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Automated deployments with Docker, Ansible & Go (Part 1 of N)]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/automated-deployments-with-docker-ansible-go/" />
+  <id>http://harishbsrinivas.github.io/automated-deployments-with-docker-ansible-go</id>
+  <published>2014-06-07T04:50:30-04:00</published>
+  <updated>2014-06-07T04:50:30-04:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;I have been experimenting with using &lt;a href=&quot;http://www.go.cd&quot;&gt;Go CD&lt;/a&gt;, &lt;a href=&quot;http://www.ansible.com/home&quot;&gt;Ansible&lt;/a&gt; and &lt;a href=&quot;http://www.docker.io&quot;&gt;Docker&lt;/a&gt; as a means of automating deployments. This post and the subsequent ones document what needs to be done to achieve seamless deployments. The first part of this series will deal with installing and configuring Docker.&lt;/p&gt;
+&lt;h2&gt;Installing Docker&lt;/h2&gt;
+&lt;p&gt;If you have never heard of Docker the following links explain what Docker is? and highlight the key differences between containers and VMs see&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.docker.com/whatisdocker/&quot;&gt;What is Docker?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.docker.com/tryit/&quot;&gt;Interactive docker tutorial&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/a/16048358&quot;&gt;How is Docker.io different from a normal virtual machine?&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Now that we know what Docker is? differences between Containers and Virtualization and a few basic commands we can jump right into the thick of things and start setting up a container.&lt;/p&gt;
+&lt;p&gt;Note: I tried this on Ubuntu but the steps should be pretty much the same for CentOS or any other variant of Linux.&lt;/p&gt;
+&lt;h3&gt;Installing Docker on Ubuntu&lt;/h3&gt;
+&lt;p&gt;Install docker by following the instructions &lt;a href=&quot;http://docs.docker.com/installation/ubuntulinux/&quot;&gt;here&lt;/a&gt;. Once installed verify that docker is running by typing&lt;/p&gt;
+&lt;h3&gt;First steps&lt;/h3&gt;
+&lt;h4&gt;Download and start a container&lt;/h4&gt;
+&lt;p&gt;[code lang=text]&lt;br /&gt;
+sudo docker run -i -t ubuntu /bin/bash&lt;br /&gt;
+[/code]&lt;/p&gt;
+&lt;p&gt;If you are behind a proxy and docker fails to fetch the images, try setting proxy in /etc/default/docker. The command above will download the ubuntu docker image and then launch and Initialize it. because we ran docker in interactive mode (&lt;strong&gt;-i&lt;/strong&gt;) docker will drop you into the container&#39;s shell. CTRL+D to exit.&lt;/p&gt;
+&lt;p&gt;To start a docker container as a daemon/running in the background use the -d option, One of the most common mistakes is to choose a process that exits right after the container starts, any process that runs inside the container needs to keep running either as a daemon or in the background with &lt;strong&gt;&#39;&amp;amp;&#39;&lt;/strong&gt;. If the process inside the container exits then the the container also exits.&lt;/p&gt;
+&lt;h4&gt;Interacting with containers&lt;/h4&gt;
+&lt;p&gt;to see running containers use the command&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;docker ps&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;To see all containers even the ones that have exited use&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;docker ps -a&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;to attach to a daemonized container first get the containers ID and then use that with docker&#39;s attach command&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;docker attach container_id&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;to restart a stopped container or to pause a container use&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;docker start container_id&lt;br /&gt;
+docker pause container_id&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;to unpause a paused container use&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;docker unpause container_id&lt;/code&gt;&lt;/p&gt;
+&lt;h4&gt;Cleanup&lt;/h4&gt;
+&lt;p&gt;Docker does not come with a cleanup command yet, you can use a little bash fu&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;docker ps -a | grep &quot;weeks ago&quot; | awk &#39;{print $1}&#39; | xargs docker rm&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;you can grep for &quot;days ago&quot; or &quot;hours ago&quot;&lt;/p&gt;
+&lt;p&gt;or to delete all containers&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;docker ps -a -q | xargs docker rm&lt;/code&gt;&lt;/p&gt;
+&lt;h4&gt;Sharing folders&lt;/h4&gt;
+&lt;p&gt;To mount a host directory in the container use the -v option&lt;/p&gt;
+&lt;p&gt;for e.g&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;docker run -v /tmp:/tmp/source -t -i ubuntu /bin/bash&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;this should mount host directory /tmp to container directory /tmp/source&lt;/p&gt;
+&lt;p&gt;you can use apt-get in download only mode with the -d option to download packages and save then in the shared folder. On the host the apt-get -d option downloads the packages to /var/cache/apt/archives&lt;/p&gt;
+&lt;p&gt;download and copy any packages you need to install into the hosts /tmp directory then install it from within the container.&lt;/p&gt;
+&lt;h4&gt;Saving changes to the container&lt;/h4&gt;
+&lt;p&gt;Once the container is customized to your liking, you need to save the changes to do this use the commit command&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;docker commit container_id image_name&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Note: when run in interactive mode the container ID will part of the bash prompt e.g&lt;/p&gt;
+&lt;p&gt;root@664cbf2186cb:/tmp/source#&lt;/p&gt;
+&lt;p&gt;else you can get the container ID by executing the docker&#39;s &#39;ps&#39; command.&lt;/p&gt;
+&lt;h4&gt;Docker networking&lt;/h4&gt;
+&lt;p&gt;By default Docker sets up a network interface called docker0 and assigns a private IP in the 172.x range to this interface, this will be a non-routable address and cannot be reached from the host or the external network. Docker also supports networking between containers using the link command. If you want the docker image to be reachable from the host and outside network there are a couple of ways to achieve this&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;create a bridge with the active interface.&lt;/li&gt;
+&lt;li&gt;Port forwarding&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5&gt;Bridge network&lt;/h5&gt;
+&lt;p&gt;on ubuntu first install bridge-utils on the host via apt-get&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;sudo apt-get install bridge-utils&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Then install &lt;a href=&quot;https://github.com/jpetazzo/pipework&quot;&gt;pipework&lt;/a&gt;. To install first download the shell &lt;a href=&quot;https://raw.githubusercontent.com/jpetazzo/pipework/master/pipework&quot;&gt;script&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;save it in /usr/bin as pipework and then make it executable.&lt;/p&gt;
+&lt;p&gt;To start a container in bridge mode:&lt;/p&gt;
+&lt;p&gt;ubuntu=$(docker run -v /tmp:/tmp/source -d phusion/baseimage /usr/bin/weborf &amp;amp;)&lt;br /&gt;
+pipework br1 $ubuntu 192.168.1.1/24&lt;br /&gt;
+ip addr add 192.168.1.254/24 dev br1&lt;/p&gt;
+&lt;h5&gt;Port forwarding&lt;/h5&gt;
+&lt;p&gt;Forwarding a port on the container to the docker host is easy, use the -p option to map a port from the container to a port on the host.&lt;br /&gt;
+Note: that the docker container still uses the default IP address in the 172.x.x.x range. Anything not explicitly forwarded will still be inaccesible.&lt;/p&gt;
+&lt;p&gt;Docker has two options for port forwarding, EXPOSE and -p option. The difference between these two is that EXPOSE only exposes the port to other docker containers but not to host or external network. the -p option exposes port to host and external network. The -p option implicitly calls  the EXPOSE command.&lt;/p&gt;
+&lt;p&gt;Next post will deal with&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Networking between containers&lt;/li&gt;
+&lt;li&gt;Security&lt;/li&gt;
+&lt;li&gt;Docker files&lt;/li&gt;
+&lt;li&gt;Private repositories&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;References:&lt;/strong&gt;&lt;br /&gt;
+&lt;a href=&quot;http://stackoverflow.com/questions/17236796/how-to-remove-old-docker-io-containers&quot;&gt;How to remove old docker.io containers&lt;/a&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/automated-deployments-with-docker-ansible-go/&quot;&gt;Automated deployments with Docker, Ansible & Go (Part 1 of N)&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on June 07, 2014.&lt;/p&gt;</content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Changing hostname of your mac from the t]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/changing-hostname-of-your-mac-from-the-t/" />
+  <id>http://harishbsrinivas.github.io/changing-hostname-of-your-mac-from-the-t</id>
+  <published>2013-07-17T20:20:27-04:00</published>
+  <updated>2013-07-17T20:20:27-04:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;Changing hostname of your mac from the terminal is easy  try&lt;br /&gt;
+sudo scutil --set HostName mymacname&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/changing-hostname-of-your-mac-from-the-t/&quot;&gt;Changing hostname of your mac from the t&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on July 17, 2013.&lt;/p&gt;</content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Automating date change on Flickr photos with SikuliX]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/hacks/photography/technology/automating-date-change-on-flickr-photos-with-sikulix/" />
+  <id>http://harishbsrinivas.github.io/hacks/photography/technology/automating-date-change-on-flickr-photos-with-sikulix</id>
+  <published>2013-07-03T02:58:35-04:00</published>
+  <updated>2013-07-03T02:58:35-04:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;I recently migrated several gigabytes of photos from Google Plus photos (formerly Picasa) to Flickr. Flickr provides a generous 1TB of data, allows full resolution images and videos and has a thriving community. This was a great opportunity to backup and showcase my photos. I began migrating photos but I hit a serious usability issue. The Flickr photostream is sorted according to the date on which photos are uploaded. There is no option to organize the photos by date taken. This meant that my entire photostream was organized by a single date (the date on which I uploaded all of these photos). The fix was to change the uploaded date to the date the pictures were taken. This meant that I would have to go thru thousands of photos and videos and manually change the date. This was a daunting task that would have taken me the entire weekend. Being a QA/Automation engineer in my day Job I thought surely there must be a faster and easier way to do this.&lt;/p&gt;
+&lt;p&gt;I found Sikuli a visual automation tool, which can be used to quickly automate things like filling forms, clicking buttons etc and has a much easier learning curve when compared to Selenium or iMacros. With Sikuli my workflow mimicked what I would have done manually.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Click on You&amp;gt;Organize menu item &amp;amp; then on the “sets &amp;amp; collections” ta&lt;/li&gt;
+&lt;li&gt;Click a photo set to edit, double click on the first photo in the set&lt;/li&gt;
+&lt;li&gt;Switch to “Dates” tab.&lt;/li&gt;
+&lt;li&gt;Copy the date in the “Date taken” field&lt;/li&gt;
+&lt;li&gt;Paste the copied date into the “Date uploaded” field&lt;/li&gt;
+&lt;li&gt;Check the “go to next item when you save?” box if unchecked&lt;/li&gt;
+&lt;li&gt;Press save and advance to next photo.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;With the Sikuli Script All I had to do was select the set, bring up photo properties, switch to date tab. Edit the sikuli script and update the total number of photos in the set. Run the automation script. What should have taken days took me about 2 hours flat. Take a look at the video below to see it in action.&lt;/p&gt;
+&lt;p&gt;[caption id=&quot;attachment_1034&quot; align=&quot;alignnone&quot; width=&quot;300&quot;]&lt;a href=&quot;http://www.flickr.com/photos/nkrypt/9200043438/&quot;&gt;&lt;img class=&quot; wp-image-1034 &quot; alt=&quot;SikuliX &amp;amp; Flickr demo&quot; src=&quot;assets/screen-shot-2013-07-03-at-2-48-57-am.png?w=300&quot; width=&quot;300&quot; height=&quot;168&quot; /&gt;&lt;/a&gt; SikuliX &amp;amp; Flickr demo[/caption]&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;font-style:inherit;line-height:1.625;&quot;&gt;SikuliX can be downloaded at http://www.sikuli.org/&lt;/span&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/hacks/photography/technology/automating-date-change-on-flickr-photos-with-sikulix/&quot;&gt;Automating date change on Flickr photos with SikuliX&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on July 03, 2013.&lt;/p&gt;</content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[One line shell script to delete all lines starting from a specific pattern to the end of file]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/programming/scripts/one-line-shell-script-to-delete-all-lines-starting-from-a-specific-pattern-to-the-end-of-file/" />
+  <id>http://harishbsrinivas.github.io/programming/scripts/one-line-shell-script-to-delete-all-lines-starting-from-a-specific-pattern-to-the-end-of-file</id>
+  <published>2013-01-07T20:28:22-05:00</published>
+  <updated>2013-01-07T20:28:22-05:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;At work today I had to run a lot of SQL files which had  -&lt;em&gt;-//@UNDO&lt;/em&gt;  followed by SQL commands to rollback the transactions  carried out at the top of the file. This is standard for SQL migration files, However MySQL server errors out when it encounters this. I used a quick shell script to remove all the --//@UNDO and all the SQL commands which followed it.&lt;/p&gt;
+&lt;pre&gt;for i in *; do echo &quot;Processing&quot; $i; sed &#39;/\-\-\/\/@UNDO/,$d&#39; $i &amp;gt; /tmp/$i; done;&lt;/pre&gt;
+&lt;p&gt;The above line will delete all lines starting from -&lt;em&gt;-//@UNDO&lt;/em&gt; until the end of file. The modified contents are then written to /tmp. The original file remains unchanged.&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/programming/scripts/one-line-shell-script-to-delete-all-lines-starting-from-a-specific-pattern-to-the-end-of-file/&quot;&gt;One line shell script to delete all lines starting from a specific pattern to the end of file&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on January 07, 2013.&lt;/p&gt;</content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Installing TinyPM agile project management software on Ubuntu]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/agile/linux/installing-tinypm-on-ubuntu/" />
+  <id>http://harishbsrinivas.github.io/agile/linux/installing-tinypm-on-ubuntu</id>
+  <published>2012-12-24T09:19:00-05:00</published>
+  <updated>2012-12-24T09:19:00-05:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;ol&gt;
+&lt;li&gt;Download TinyPM war for tomcat 6.x from &lt;a title=&quot;here&quot; href=&quot;http://www.tinypm.com/download&quot; target=&quot;_blank&quot;&gt;here&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Install tomcat 6.x  and mysql-server (5.x)
+&lt;pre&gt;sudo apt-get install tomcat6 mysql-server&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Download mysql connector / j from mysql website (5.x)&lt;/li&gt;
+&lt;li&gt;Go to /usr/share/tomcat6/lib copy the files in the dependency folder of the tinypm zip file downloaded in step 1. Copy the MySQL connector jar file here.&lt;/li&gt;
+&lt;li&gt;Create a database using the following commands
+&lt;pre&gt;CREATE DATABASE tinypmdb CHARACTER SET = &#39;utf8&#39; COLLATE = &#39;utf8_general_ci&#39;;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Create a user with SELECT, UPDATE, INSERT, LOCK TABLES and DELETE rights:
+&lt;pre&gt;GRANT SELECT, UPDATE, INSERT, LOCK TABLES, DELETE ON tinypmdb.* TO &#39;username&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;password&#39;;
+FLUSH PRIVILEGES;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Run scripts to create the tinyPM database schema and data (instructions provided here are for MySQL console application):
+&lt;pre&gt;u tinypmdb
+. %PATH_TO_INSTALL_FOLDER%/sql/mysql/create_schema-2.x.sql
+. %PATH_TO_INSTALL_FOLDER%/sql/mysql/create_data-2.x.sql&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Create search index using commands
+&lt;pre&gt;sudo mkdir /var/search_index /var/search_index/tinypm
+sudo chown -R tomcat6:tomcat6 /var/search_index/tinypm&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Create /var/lib/tomcat6/webapps/tinypm, extract the contents of the war file into this folder.&lt;/li&gt;
+&lt;li&gt;Edit /var/lib/tomcat6/webapps/tinypm/WEB-INF/classes/hibernate.properties and enter the MySQL db details. uncomment the last line
+&lt;pre&gt;#hibernate.search.default.indexBase = /var/search_index/tinypm&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Restart tomcat with sudo service tomcat6 restart, visit &lt;a title=&quot;http://localhost:8080/tinypm&quot; href=&quot;http://localhost:8080/tinypm&quot; target=&quot;_blank&quot;&gt;http://localhost:8080/tinypm&lt;/a&gt; (default credentials are admin/admin)&lt;/li&gt;
+&lt;/ol&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/agile/linux/installing-tinypm-on-ubuntu/&quot;&gt;Installing TinyPM agile project management software on Ubuntu&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on December 24, 2012.&lt;/p&gt;</content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[How to install FreeNX server and client on Ubuntu]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/linux/install-nomachine-on-linux/" />
+  <id>http://harishbsrinivas.github.io/linux/install-nomachine-on-linux</id>
+  <published>2012-09-03T20:26:52-04:00</published>
+  <updated>2012-09-03T20:26:52-04:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;ol&gt;
+&lt;li&gt;Add the FreeNX team repo
+&lt;pre&gt;  sudo add-apt-repository ppa:freenx-team&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Install FreeNX
+&lt;pre&gt;sudo apt-get update &amp;amp;&amp;amp; sudo apt-get install freenx&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Apply Patch
+&lt;pre&gt;wget https://bugs.launchpad.net/freenx-server/+bug/576359/+attachment/1378450/+files/nxsetup.tar.gz &amp;amp;&amp;amp; tar xvf nxsetup.tar.gz &amp;amp;&amp;amp; sudo cp nxsetup /usr/lib/nx&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Setup NoMachine keys
+&lt;pre&gt;  sudo /usr/lib/nx/nxsetup --install --setup-nomachine-key&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Import public key for server
+&lt;pre&gt;sudo cp /usr/NX/etc/keys/node.localhost.id_dsa.pub /tmp/node.localhost.id_pub.save
+sudo /usr/NX/bin/nxnode --keyadd /tmp/node.localhost.id_pub.save
+sudo  nx:root /usr/NX/bin/nxserver --keygen
+sudo chown nx:root /usr/NX/home/nx/.ssh/authorized_keys2
+sudo chmod 0644 /usr/NX/home/nx/.ssh/authorized_keys2
+sudo mv /usr/NX/home/nx/.ssh/authorized_keys2 /usr/NX/home/nx/.ssh/autohriazed_keys --&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt; Add new user using useradd, then add this username to /etc/ssh/sshd_config under AllowedUsers (multiple usernames can be specified with spaces separating the names)&lt;/li&gt;
+&lt;li&gt; check if the user is ableto login to NXServer bu uisng command
+&lt;pre&gt;sudo /usr/NX/bin/nxserver --usercheck&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Add the following  shell script to /usr/NX/bin/nxwrapper
+&lt;pre&gt;#!/bin/bash
+nxnode=${ps -o ppid= -p $PPID}
+nxagent=${pgrep -p $nxnode -u $USER -x nxagent}
+${1+&quot;$@&quot;}
+exec kill $nxagent&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;  Import the key in /usr/NX/keys/rsa_id.pub.key on to client. use custom for desktop manager specify path to nxwrapper and specify startfluxbox&lt;/li&gt;
+&lt;/ol&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/linux/install-nomachine-on-linux/&quot;&gt;How to install FreeNX server and client on Ubuntu&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on September 03, 2012.&lt;/p&gt;</content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Fix for "Cannot shutdown using power button" on Ubuntu]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/hacks/linux/fix-for-shutdown-using-power-button/" />
+  <id>http://harishbsrinivas.github.io/hacks/linux/fix-for-shutdown-using-power-button</id>
+  <published>2012-09-03T20:03:54-04:00</published>
+  <updated>2012-09-03T20:03:54-04:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;After my recent upgrade to ubuntu, pressing the power button to shut down stopped working. I had to remap the script mapped to the power button by&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Editing  /etc/acpi/events/powerbtn using the command&lt;br /&gt;
+&lt;em&gt;   sudo gedit  /etc/acpi/events/powerbtn&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Commenting line shown below by adding a # to the beginning  of the line&lt;br /&gt;
+&lt;em&gt;   action=/etc/acpi/powerbtn.s&lt;/em&gt;h&lt;/li&gt;
+&lt;li&gt;adding a new line&lt;br /&gt;
+&lt;em&gt;   action=/sbin/poweroff&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Saved and exited Gedit. Tested to make sure the functionality is restored by pressing the  power button to shut down&lt;em&gt;&lt;br /&gt;
+&lt;/em&gt;&lt;em&gt;&lt;br /&gt;
+&lt;/em&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/hacks/linux/fix-for-shutdown-using-power-button/&quot;&gt;Fix for "Cannot shutdown using power button" on Ubuntu&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on September 03, 2012.&lt;/p&gt;</content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Joining multiple videos segments on Ubuntu]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/linux/joining-multiple-videos-into-one-file/" />
+  <id>http://harishbsrinivas.github.io/linux/joining-multiple-videos-into-one-file</id>
+  <published>2011-08-14T15:30:08-04:00</published>
+  <updated>2011-08-14T15:30:08-04:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;ol&gt;
+&lt;li&gt;Install mencoder sudo apt-get install mencoder&lt;/li&gt;
+&lt;li&gt;Use the command
+&lt;pre&gt;mencoder -oac mp3lame -ovc copy -o &#39;../combined.avi&#39; `find -name &#39;*.AVI&#39;` to convert files&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/linux/joining-multiple-videos-into-one-file/&quot;&gt;Joining multiple videos segments on Ubuntu&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on August 14, 2011.&lt;/p&gt;</content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Setting Hardware clock to not use UTC in Ubuntu]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/linux/setting-hardware-clock-to-not-use-utc-in-ubuntu/" />
+  <id>http://harishbsrinivas.github.io/linux/setting-hardware-clock-to-not-use-utc-in-ubuntu</id>
+  <published>2011-04-12T23:52:38-04:00</published>
+  <updated>2011-04-12T23:52:38-04:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;I installed Ubuntu on my Desktop but during the install I selected the option &quot;Hardware clock set to UTC&quot;, This messed up the time on the computer as the hardware clock was in fact set to EST. to fix this I had to&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;edit the /etc/default/rcS file with the command
+&lt;pre&gt;sudo gedit /etc/default/rcS&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Change UTC=yes to UTC=no and restart computer&lt;/li&gt;
+&lt;/ol&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/linux/setting-hardware-clock-to-not-use-utc-in-ubuntu/&quot;&gt;Setting Hardware clock to not use UTC in Ubuntu&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on April 12, 2011.&lt;/p&gt;</content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Installing LIRC & Irxevent]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/linux/installing-lirc-irxevent/" />
+  <id>http://harishbsrinivas.github.io/linux/installing-lirc-irxevent</id>
+  <published>2011-03-03T06:57:50-05:00</published>
+  <updated>2011-03-03T06:57:50-05:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;ol&gt;
+&lt;li&gt;sudo apt-get install lirclirc-x mythbuntu-lirc-generator&lt;/li&gt;
+&lt;li&gt;Select stream zap PC remote when asked.&lt;/li&gt;
+&lt;li&gt;Do not select any IRblaster&lt;/li&gt;
+&lt;li&gt;start lircd&lt;/li&gt;
+&lt;li&gt;start irw and see if it detects any key presses&lt;/li&gt;
+&lt;li&gt;Copy the attached Lircmap.xml file into ~/.xbmc&lt;/li&gt;
+&lt;li&gt;startxbmc and check if the remote works&lt;/li&gt;
+&lt;li&gt;run mythbuntu-lirc-generator&lt;/li&gt;
+&lt;li&gt;edit .lircrc and append ~/.lirc/common to the end of the file&lt;/li&gt;
+&lt;li&gt;paste the attached common file in ~/.lirc/&lt;/li&gt;
+&lt;/ol&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/linux/installing-lirc-irxevent/&quot;&gt;Installing LIRC & Irxevent&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on March 03, 2011.&lt;/p&gt;</content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Mapping marble mouse buttons in ubuntu (custom configuration)]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/linux/mapping-marble-mouse-buttons-in-ubuntu-custom-configuration/" />
+  <id>http://harishbsrinivas.github.io/linux/mapping-marble-mouse-buttons-in-ubuntu-custom-configuration</id>
+  <published>2010-12-23T13:38:23-05:00</published>
+  <updated>2010-12-23T13:38:23-05:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;I recently purchased a marble mouse but soon found out that the mouse buttons do not function as expected on Ubuntu. This was soon remedied with the following tweaks to the Edit the locate xorg.conf.d directory using command&lt;/p&gt;
+&lt;pre&gt;locate xorg.conf.d | grep d$&lt;/pre&gt;
+&lt;p&gt;edit the 50-marblemouse.conf in the xorg.conf.d, replace the inputClass with the section below&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;### START FILE SNIPPET ###&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;Section &quot;InputClass&quot;
+      Identifier &quot;Marble Mouse&quot;
+      MatchProduct &quot;Logitech USB Trackball&quot;
+      MatchIsPointer &quot;on&quot;
+      MatchDevicePath &quot;/dev/input/event*&quot;
+      Driver &quot;evdev&quot;
+      Option &quot;ButtonMapping&quot; &quot;1 8 3 4 5 6 7 2 9&quot;
+      Option &quot;EmulateWheel&quot; &quot;true&quot;
+      Option &quot;EmulateWheelButton&quot; &quot;9&quot;
+      Option &quot;ZAxisMapping&quot; &quot;4 5&quot;
+      Option &quot;XAxisMapping&quot; &quot;6 7&quot;
+      Option &quot;Emulate3Buttons&quot; &quot;false&quot;
+EndSection&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;### END FILE SNIPPET ###&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;text-decoration:underline;&quot;&gt;Button numbers&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;1 - Large left button&lt;/p&gt;
+&lt;p&gt;8- Small left button&lt;/p&gt;
+&lt;p&gt;3 - Large right button&lt;/p&gt;
+&lt;p&gt;9 - Small left button&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/linux/mapping-marble-mouse-buttons-in-ubuntu-custom-configuration/&quot;&gt;Mapping marble mouse buttons in ubuntu (custom configuration)&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on December 23, 2010.&lt;/p&gt;</content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Setting up mediatomb using ffpstick on a Zyxcel NSA210]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/hacks/linux/setting-up-mediatomb-using-ffpstick-on-a-zyxcel-nsa210/" />
+  <id>http://harishbsrinivas.github.io/hacks/linux/setting-up-mediatomb-using-ffpstick-on-a-zyxcel-nsa210</id>
+  <published>2010-12-17T19:38:01-05:00</published>
+  <updated>2010-12-17T19:38:01-05:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;ol&gt;
+&lt;li&gt;Download FFPStick 0.5 from &lt;a title=&quot;FFPStick&quot; href=&quot;http://zyxel.nas-central.org/wiki/FFP-stick&quot; target=&quot;_blank&quot;&gt;here&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Format a USB stick with FAT16, extract the contents of the FFPStick Archive you downloaded on the the root of the USB stick.&lt;/li&gt;
+&lt;li&gt;Shutdown the NSA210, Plug in the USB stick and reboot&lt;/li&gt;
+&lt;li&gt;wait for 2 minutes and then login to the box via telnet&lt;/li&gt;
+&lt;li&gt;change root password, delete account called &quot;user&quot;&lt;/li&gt;
+&lt;li&gt;start ssh with
+&lt;pre&gt;chmod a+x /ffp/start/sshd.sh
+/ffp/start/sshd.sh start&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;logout from telnet and log back in via ssh, login as root with the newly changed password.&lt;/li&gt;
+&lt;li&gt;stop telnet and then disable telnet service using commands
+&lt;pre&gt;chmod -x /ff/start/telnetd.sh
+/ffp/start/telnet.sh stop&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Start mediatomb to create the initial config file by using the command
+&lt;pre&gt;chmod -x /ff/start/mediatomb.sh
+/ffp/start/mediatomb.sh start&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Wait for 30 seconds and then issue the stop command to stop mediatomb
+&lt;pre&gt;/ffp/start/mediatomb.sh stop&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Customize the /ffp/var/mediatomb/config.xml file&lt;/li&gt;
+&lt;li&gt;Start mediatomb again, navigate to http://cerberos:49152 and begin adding media to database.&lt;/li&gt;
+&lt;li&gt;To remove the listing for PC directory add the following line under &amp;lt;server&amp;gt;&lt;br /&gt;
+&lt;em&gt; &amp;lt;pc-directory upnp-hide=”yes”/&amp;gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Verify that the upnp server is reachable using the client on a droid or using enna or moovida.&lt;/li&gt;
+&lt;/ol&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/hacks/linux/setting-up-mediatomb-using-ffpstick-on-a-zyxcel-nsa210/&quot;&gt;Setting up mediatomb using ffpstick on a Zyxcel NSA210&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on December 17, 2010.&lt;/p&gt;</content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Fixing sound in fluxbox (alsactl restore)]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/linux/fixing-sound-in-fluxbox-alsactl-restore/" />
+  <id>http://harishbsrinivas.github.io/linux/fixing-sound-in-fluxbox-alsactl-restore</id>
+  <published>2010-12-16T16:07:30-05:00</published>
+  <updated>2010-12-16T16:07:30-05:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;ol&gt;
+&lt;li&gt;Login to the box, sudo -i and enter password&lt;/li&gt;
+&lt;li&gt;open alsamixer, set desired levels then type &quot;alsactl store&quot;&lt;/li&gt;
+&lt;li&gt;ctrl+d to logout of root shell.&lt;/li&gt;
+&lt;li&gt;gedit ~/.fluxbox/startup, add alsactl restore &amp;amp; to the startup&lt;/li&gt;
+&lt;li&gt;reboot or logout and log back in into fluxbox&lt;/li&gt;
+&lt;/ol&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/linux/fixing-sound-in-fluxbox-alsactl-restore/&quot;&gt;Fixing sound in fluxbox (alsactl restore)&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on December 16, 2010.&lt;/p&gt;</content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Mounting a drive in fstab so that it gets auto mounted on boot]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/linux/mounting-a-drive-in-fstab-so-that-it-gets-auto-mounted-on-boot/" />
+  <id>http://harishbsrinivas.github.io/linux/mounting-a-drive-in-fstab-so-that-it-gets-auto-mounted-on-boot</id>
+  <published>2010-07-19T09:24:13-04:00</published>
+  <updated>2010-07-19T09:24:13-04:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;ol&gt;
+&lt;li&gt;In a terminal type blkid, this shows the drive name to UUID mapping. note down the UUID of the drive you want mounted at boot.&lt;/li&gt;
+&lt;li&gt;As root create a folder called Local Backup in /media&lt;/li&gt;
+&lt;li&gt;change ownership of the folder created in the step above to the user that logs in (IRIS9)&lt;/li&gt;
+&lt;li&gt;edit /etc/fstab and paste the line below after modifying the appropriate UUID and paths to the folders
+&lt;pre&gt; UUID=xxxxxxxxxxxxxxxxxxxxxx /media/Local40Backup ntfs defaults 0 2&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;space in path top folders can be escaped by using 40&lt;/li&gt;
+&lt;li&gt;save the file and then type sudo mount -a. check if the drive is mounted.&lt;/li&gt;
+&lt;/ol&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/linux/mounting-a-drive-in-fstab-so-that-it-gets-auto-mounted-on-boot/&quot;&gt;Mounting a drive in fstab so that it gets auto mounted on boot&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on July 19, 2010.&lt;/p&gt;</content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Starting lampp on boot]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/linux/starting-lampp-on-boot/" />
+  <id>http://harishbsrinivas.github.io/linux/starting-lampp-on-boot</id>
+  <published>2010-05-09T17:40:04-04:00</published>
+  <updated>2010-05-09T17:40:04-04:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;I recently installed the portable version of &lt;a title=&quot;xampp&quot; href=&quot;http://www.apachefriends.org/en/XAMPP-linux.html&quot; target=&quot;_blank&quot;&gt;xampp&lt;/a&gt; and needed to start it when Ubuntu starts, to accomplish this I had to&lt;/p&gt;
+&lt;p&gt;cd /etc/rc2.d and typed the following commands&lt;/p&gt;
+&lt;pre&gt;ln -s /opt/lampp/lampp S99lampp
+ln -s /opt/lampp/lampp K01lampp&lt;/pre&gt;
+&lt;p&gt;restart server and verify that xampp admin page is accessible.&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/linux/starting-lampp-on-boot/&quot;&gt;Starting lampp on boot&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on May 09, 2010.&lt;/p&gt;</content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[How to make the USB ports accessible to Windows Guests in virtualbox hosts on Unbutu]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/linux/virtualization/how-to-enable-usb-access-in-virtualbox-on-ubuntu/" />
+  <id>http://harishbsrinivas.github.io/linux/virtualization/how-to-enable-usb-access-in-virtualbox-on-ubuntu</id>
+  <published>2010-03-16T08:05:38-04:00</published>
+  <updated>2010-03-16T08:05:38-04:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;I tried running windows XP inside a virtual machine and found out that I cannot access the USB port from within the VM. To fix this I had to make sure that my username belonged to the vboxusers group with the command&lt;/p&gt;
+&lt;pre&gt;Execute sudo usermod -G vboxusers -a &amp;lt;username&amp;gt;&lt;/pre&gt;
+&lt;p&gt;then I had to set VBOX_USB=USBFS VirtualBox in the virtual box configuration&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/linux/virtualization/how-to-enable-usb-access-in-virtualbox-on-ubuntu/&quot;&gt;How to make the USB ports accessible to Windows Guests in virtualbox hosts on Unbutu&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on March 16, 2010.&lt;/p&gt;</content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Installing Cannon MP490 printer as a shared network printer on Ubuntu]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/linux/installing-mp490-shared-network-printer-on-ubuntu/" />
+  <id>http://harishbsrinivas.github.io/linux/installing-mp490-shared-network-printer-on-ubuntu</id>
+  <published>2009-06-20T14:56:19-04:00</published>
+  <updated>2009-06-20T14:56:19-04:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;ol&gt;
+&lt;li&gt;Download the canon drivers for Linux from &lt;a title=&quot;here&quot; href=&quot;http://software.canon-europe.com/products/0010754.asp&quot; target=&quot;_blank&quot;&gt;here&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Extract the .deb packages from the archive, install the common package first using the commands below (Don&#39;t need the &quot;--force-architecture&quot; parameter if  using i386 architecture)
+&lt;pre&gt;sudo dpkg -i --force-architecture cnijfilter-common_3.20-1_i386.deb
+sudo dpkg -i --force-architecture cnijfilter-mp490series_3.20-1_i386.deb&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Restart cups by issuing the command
+&lt;pre&gt; sudo service cups restart&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;Goto &lt;a title=&quot;http://localhost:631&quot; href=&quot;http://localhost:631&quot; target=&quot;_blank&quot;&gt;http://localhost:631&lt;/a&gt;, add canon printer as a networked printer, Select windows samba shared printer&lt;/li&gt;
+&lt;li&gt;Test printer&lt;/li&gt;
+&lt;/ol&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/linux/installing-mp490-shared-network-printer-on-ubuntu/&quot;&gt;Installing Cannon MP490 printer as a shared network printer on Ubuntu&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on June 20, 2009.&lt;/p&gt;</content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Merging multiple PDF files with GhostScript and pdftk]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/linux/merging-multiple-pdf-files-in-linux/" />
+  <id>http://harishbsrinivas.github.io/linux/merging-multiple-pdf-files-in-linux</id>
+  <published>2009-05-16T12:11:18-04:00</published>
+  <updated>2009-05-16T12:11:18-04:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;I had to merge multiple PDF files into one recently and wanted a quick way to do it. In order to do this I had to&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Download and install ghostscript and pdftk
+&lt;pre&gt;sudo apt-get install gs pdftk&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;cd into the directory containing the files and issue command
+&lt;pre&gt;gs -dNOPAUSE -sDEVICE=pdfwrite -sOUTPUTFILE=combined.pdf -dBATCH first.pdf second.pdf&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/linux/merging-multiple-pdf-files-in-linux/&quot;&gt;Merging multiple PDF files with GhostScript and pdftk&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on May 16, 2009.&lt;/p&gt;</content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[How to mount remote samba and windows shares]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/linux/how-to-mount-remote-samba-and-windows-shares/" />
+  <id>http://harishbsrinivas.github.io/linux/how-to-mount-remote-samba-and-windows-shares</id>
+  <published>2009-04-27T16:15:06-04:00</published>
+  <updated>2009-04-27T16:15:06-04:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;p&gt;&lt;strong&gt;GUI version&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;For a windows share, Share the folder on windows, make sure share name is short within 8 characters&lt;/p&gt;
+&lt;p&gt;Go into Linux and open nautilus, go to networks browse and locate share, click to enter user name and password.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;command line version&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Create a folder on your desktop called winshare using the command&lt;em&gt;&lt;br /&gt;
+mkdir winshare&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Execute the mount command&lt;em&gt;&lt;br /&gt;
+sudo mount -t cifs //192.168.27.xxx/sharename -o username=username,password=password ~/Desktop/winshare/&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;To unmount type&lt;em&gt;&lt;br /&gt;
+sudo umount ~/Desktop/winshare&lt;/em&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/linux/how-to-mount-remote-samba-and-windows-shares/&quot;&gt;How to mount remote samba and windows shares&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on April 27, 2009.&lt;/p&gt;</content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Restoring GRUB after Installing Windows (Dual boot setup)]]></title>
+  <link rel="alternate" type="text/html" href="http://harishbsrinivas.github.io/linux/restoring-grub-after-windows-install/" />
+  <id>http://harishbsrinivas.github.io/linux/restoring-grub-after-windows-install</id>
+  <published>2009-02-22T20:36:09-05:00</published>
+  <updated>2009-02-22T20:36:09-05:00</updated>
+  <author>
+    <name>Harish Srinivas</name>
+    <uri>http://harishbsrinivas.github.io</uri>
+    <email>harishbsrinivas@gmail.com</email>
+  </author>
+  <content type="html">&lt;ol style=&quot;text-align:left;&quot;&gt;
+&lt;li&gt;Boot the computer  using an Ubuntu live CD&lt;/li&gt;
+&lt;li&gt;Open a terminal and type
+&lt;pre&gt;sudo grub
+grub&amp;gt;find /boot/grub/stage1&lt;/pre&gt;
+&lt;p&gt;This will bring up a list of partitions, example : (hd0,1) = it will be different on your system.&lt;/li&gt;
+&lt;li&gt;type the following commands in the terminal
+&lt;pre&gt; root (hd0,1)
+ setup (hd0)&lt;/pre&gt;
+&lt;p&gt;This will display text similar to the one below&lt;br /&gt;
+&lt;em&gt;   Checking if “/boot/grub/stage1? exists… yes&lt;/em&gt;&lt;br /&gt;
+&lt;em&gt; &lt;em&gt;   &lt;/em&gt;Checking if “/boot/grub/stage2? exists… yes&lt;/em&gt;&lt;br /&gt;
+&lt;em&gt; &lt;em&gt;   &lt;/em&gt;Checking if “/boot/grub/e2fs_stage1_5? exists… yes&lt;/em&gt;&lt;br /&gt;
+&lt;em&gt; &lt;em&gt;   &lt;/em&gt;Running “embed /boot/grub/e2fs_stage1_5 (hd0)”… 16 sectors are embedded.&lt;/em&gt;&lt;br /&gt;
+&lt;em&gt; &lt;em&gt;   &lt;/em&gt;succeeded&lt;/em&gt;&lt;br /&gt;
+&lt;em&gt; &lt;em&gt;   &lt;/em&gt;Running “install /boot/grub/stage1 (hd0) (hd0)1+16 p (hd0,)/boot/grub/stage2&lt;/em&gt;&lt;br /&gt;
+&lt;em&gt; &lt;em&gt;   &lt;/em&gt;/boot/grub/menu.lst”… succeeded&lt;/em&gt;&lt;br /&gt;
+&lt;em&gt; &lt;em&gt;   &lt;/em&gt;Done.&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;/em&gt;type quit&lt;/li&gt;
+&lt;li&gt;type reboot&lt;/li&gt;
+&lt;/ol&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://harishbsrinivas.github.io/linux/restoring-grub-after-windows-install/&quot;&gt;Restoring GRUB after Installing Windows (Dual boot setup)&lt;/a&gt; was originally published by Harish Srinivas at &lt;a href=&quot;http://harishbsrinivas.github.io&quot;&gt;TECH NOTES, RAMBLINGS & WHATNOTS&lt;/a&gt; on February 22, 2009.&lt;/p&gt;</content>
+</entry>
+
+</feed>

@@ -5,34 +5,55 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
 <head>
 <meta charset="utf-8">
-<title>TECH NOTES, RAMBLINGS & WHATNOTS</title>
-<meta name="description" content="A responsive Jekyll theme with editorial tendencies by designer Michael Rose.">
-<meta name="keywords" content="Jekyll, theme, responsive, blog, template">
+<title>Remove EXIF Data From the Command Line &#8211; TECH NOTES, RAMBLINGS & WHATNOTS</title>
+<meta name="description" content="Removing EXIF Metadata with ImageMagick
+If you need to strip the EXIF metadata from images, use ImageMagick's mogrify command. To install ImageMagick on ubuntu using apt type the following command in a terminal
+sudo apt-get  install ImageMagick
+After ImageMagick is installed, you will have /usr/bin/mogrify available. The mogrify command can be used to strip Exif data from images.
+mogrify -strip imagename.jpg
+
+
+">
+<meta name="keywords" content="exif, mogrify">
 
 
 
 <!-- Twitter Cards -->
-<meta name="twitter:title" content="TECH NOTES, RAMBLINGS & WHATNOTS">
-<meta name="twitter:description" content="A responsive Jekyll theme with editorial tendencies by designer Michael Rose.">
+<meta name="twitter:title" content="Remove EXIF Data From the Command Line">
+<meta name="twitter:description" content="Removing EXIF Metadata with ImageMagick
+If you need to strip the EXIF metadata from images, use ImageMagick's mogrify command. To install ImageMagick on ubuntu using apt type the following command in a terminal
+sudo apt-get  install ImageMagick
+After ImageMagick is installed, you will have /usr/bin/mogrify available. The mogrify command can be used to strip Exif data from images.
+mogrify -strip imagename.jpg
+
+
+">
 
 
 
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://harishbsrinivas.github.io/images/texture-feature-01.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://harishbsrinivas.github.io/images/default-thumb.png">
 
 <!-- Open Graph -->
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TECH NOTES, RAMBLINGS & WHATNOTS">
-<meta property="og:description" content="A responsive Jekyll theme with editorial tendencies by designer Michael Rose.">
-<meta property="og:url" content="http://harishbsrinivas.github.io/">
+<meta property="og:title" content="Remove EXIF Data From the Command Line">
+<meta property="og:description" content="Removing EXIF Metadata with ImageMagick
+If you need to strip the EXIF metadata from images, use ImageMagick's mogrify command. To install ImageMagick on ubuntu using apt type the following command in a terminal
+sudo apt-get  install ImageMagick
+After ImageMagick is installed, you will have /usr/bin/mogrify available. The mogrify command can be used to strip Exif data from images.
+mogrify -strip imagename.jpg
+
+
+">
+<meta property="og:url" content="http://harishbsrinivas.github.io/linux/photography/remove-exif-data-from-the-command-line/">
 <meta property="og:site_name" content="TECH NOTES, RAMBLINGS & WHATNOTS">
 
 
 
 
 
-<link rel="canonical" href="http://harishbsrinivas.github.io/">
+<link rel="canonical" href="http://harishbsrinivas.github.io/linux/photography/remove-exif-data-from-the-command-line/">
 <link href="http://harishbsrinivas.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="TECH NOTES, RAMBLINGS & WHATNOTS Feed">
 
 
@@ -71,7 +92,7 @@
 
 </head>
 
-<body class="home">
+<body class="post">
 
 <!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
 
@@ -99,17 +120,10 @@
 </div><!-- /.navigation-wrapper -->
 
 
-  <div class="image-wrap">
-  <img src=
-    
-      "http://harishbsrinivas.github.io/images/texture-feature-01.jpg"
-    
-  alt=" feature image">
-  </div><!-- /.image-wrap -->
 
-
-<div class="article-author-side">
-  
+<div id="main" role="main">
+  <div class="article-author-side">
+    
 
 
 
@@ -131,58 +145,67 @@
 
 
 
-</div>
+  </div>
+  <article>
+    <div class="headline-wrap">
+      
+        <h1><a href="http://harishbsrinivas.github.io/linux/photography/remove-exif-data-from-the-command-line/" rel="bookmark" title="Remove EXIF Data From the Command Line">Remove EXIF Data From the Command Line</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p><strong>Removing EXIF Metadata with ImageMagick</strong></p>
+<p>If you need to strip the EXIF metadata from images, use ImageMagick's mogrify command. To install ImageMagick on ubuntu using apt type the following command in a terminal</p>
+<pre><em>sudo apt-get  install ImageMagick</em></pre>
+<p>After ImageMagick is installed, you will have /usr/bin/mogrify available. The mogrify command can be used to strip Exif data from images.</p>
+<pre><em>mogrify -strip imagename.jpg</em></pre>
 
-<div id="index">
-  <h3><a href="http://harishbsrinivas.github.io/posts/">Recent Posts</a></h3>
-      
-  <article>
-    
-      <h2><a href="http://harishbsrinivas.github.io/automated-deployments-with-docker-ansible-go/" title="Automated deployments with Docker, Ansible & Go (Part 1 of N)">Automated deployments with Docker, Ansible & Go (Part 1 of N)</a></h2>
-      <p>I have been experimenting with using Go CD, Ansible and Docker as a means of automating deployments. This post and the subsequent ones document what needs to...</p>
-    
-  </article>
-      
-  <article>
-    
-      <h2><a href="http://harishbsrinivas.github.io/changing-hostname-of-your-mac-from-the-t/" title="Changing hostname of your mac from the t">Changing hostname of your mac from the t</a></h2>
-      <p>Changing hostname of your mac from the terminal is easy  try
-sudo scutil --set HostName mymacname
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          
 
 
-</p>
-    
-  </article>
-      
-  <article>
-    
-      <h2><a href="http://harishbsrinivas.github.io/hacks/photography/technology/automating-date-change-on-flickr-photos-with-sikulix/" title="Automating date change on Flickr photos with SikuliX">Automating date change on Flickr photos with SikuliX</a></h2>
-      <p>I recently migrated several gigabytes of photos from Google Plus photos (formerly Picasa) to Flickr. Flickr provides a generous 1TB of data, allows full reso...</p>
-    
-  </article>
-      
-  <article>
-    
-      <h2><a href="http://harishbsrinivas.github.io/programming/scripts/one-line-shell-script-to-delete-all-lines-starting-from-a-specific-pattern-to-the-end-of-file/" title="One line shell script to delete all lines starting from a specific pattern to the end of file">One line shell script to delete all lines starting from a specific pattern to the end of file</a></h2>
-      <p>At work today I had to run a lot of SQL files which had  --//@UNDO  followed by SQL commands to rollback the transactions  carried out at the top of the file...</p>
-    
-  </article>
-      
-  <article>
-    
-      <h2><a href="http://harishbsrinivas.github.io/agile/linux/installing-tinypm-on-ubuntu/" title="Installing TinyPM agile project management software on Ubuntu">Installing TinyPM agile project management software on Ubuntu</a></h2>
-      <p>
-Download TinyPM war for tomcat 6.x from here
-Install tomcat 6.x  and mysql-server (5.x)
-sudo apt-get install tomcat6 mysql-server
 
-Download mysql connector ...</p>
-    
-  </article>
+	<img src="http://harishbsrinivas.github.io/images/bio-photo.jpg" class="bio-photo" alt="Harish Srinivas bio photo"></a>
+
+<h3>Harish Srinivas</h3>
+<p>“Autodidact with an insatiable thirst for learning something new everyday. Wearer of many hats. DevOp Engineer/Release Engineer, Security Engineer, Linux fanatic, Amateur photographer, Maker & Novice App developer.”</p>
+<a href="mailto:harishbsrinivas@gmail.com" class="author-social" target="_blank"><i class="fa fa-envelope-square"></i> Email</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>Remove EXIF Data From the Command Line</strong> was published on <time datetime="2008-10-17T01:40:55-04:00">October 17, 2008</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
   
-</div><!-- /#index -->
+  </article>
+</div><!-- /#main -->
 
 <div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://harishbsrinivas.github.io/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://harishbsrinivas.github.io/automated-deployments-with-docker-ansible-go/" title="Automated deployments with Docker, Ansible & Go (Part 1 of N)">Automated deployments with Docker, Ansible & Go (Part 1 of N)</a></li>
+    
+      <li><a href="http://harishbsrinivas.github.io/changing-hostname-of-your-mac-from-the-t/" title="Changing hostname of your mac from the t">Changing hostname of your mac from the t</a></li>
+    
+      <li><a href="http://harishbsrinivas.github.io/hacks/photography/technology/automating-date-change-on-flickr-photos-with-sikulix/" title="Automating date change on Flickr photos with SikuliX">Automating date change on Flickr photos with SikuliX</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
   <footer>
     <div class="google-ads">
   <!-- 320 x 50 ad -->
@@ -205,7 +228,7 @@ Download mysql connector ...</p>
 <script>window.jQuery || document.write('<script src="http://harishbsrinivas.github.io/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
 <script src="http://harishbsrinivas.github.io/assets/js/scripts.min.js"></script>
 
+	        
 
-  
 </body>
 </html>

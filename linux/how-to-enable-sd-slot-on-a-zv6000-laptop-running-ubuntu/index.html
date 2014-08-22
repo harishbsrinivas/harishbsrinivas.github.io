@@ -1,0 +1,308 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>How to enable SD slot on a ZV6000 laptop running Ubuntu &#8211; TECH NOTES, RAMBLINGS & WHATNOTS</title>
+<meta name="description" content="I recently switched from fedora core 6 to Ubuntu and over the past few weeks have had no problems with the installation except with the SD slot. I found a link on the Ubuntu forum that has a small script that would enable the SD slot.
+Here is how to enable the SD slot on any laptop that has an SD slot based on the Texas Instruments PCI6411/6421/6611/6621/7411/7421/7611/7621 chip-sets.
+1. Create a file name sdhci.sh on your desktop with the  following code
+#!/bin/sh# from:#http://ubuntuforums.org/showthread.php?p=1614392#post1614392## Get lsb functions
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="How to enable SD slot on a ZV6000 laptop running Ubuntu">
+<meta name="twitter:description" content="I recently switched from fedora core 6 to Ubuntu and over the past few weeks have had no problems with the installation except with the SD slot. I found a link on the Ubuntu forum that has a small script that would enable the SD slot.
+Here is how to enable the SD slot on any laptop that has an SD slot based on the Texas Instruments PCI6411/6421/6611/6621/7411/7421/7611/7621 chip-sets.
+1. Create a file name sdhci.sh on your desktop with the  following code
+#!/bin/sh# from:#http://ubuntuforums.org/showthread.php?p=1614392#post1614392## Get lsb functions
+
+">
+
+
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://harishbsrinivas.github.io/images/default-thumb.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to enable SD slot on a ZV6000 laptop running Ubuntu">
+<meta property="og:description" content="I recently switched from fedora core 6 to Ubuntu and over the past few weeks have had no problems with the installation except with the SD slot. I found a link on the Ubuntu forum that has a small script that would enable the SD slot.
+Here is how to enable the SD slot on any laptop that has an SD slot based on the Texas Instruments PCI6411/6421/6611/6621/7411/7421/7611/7621 chip-sets.
+1. Create a file name sdhci.sh on your desktop with the  following code
+#!/bin/sh# from:#http://ubuntuforums.org/showthread.php?p=1614392#post1614392## Get lsb functions
+
+">
+<meta property="og:url" content="http://harishbsrinivas.github.io/linux/how-to-enable-sd-slot-on-a-zv6000-laptop-running-ubuntu/">
+<meta property="og:site_name" content="TECH NOTES, RAMBLINGS & WHATNOTS">
+
+
+
+
+
+<link rel="canonical" href="http://harishbsrinivas.github.io/linux/how-to-enable-sd-slot-on-a-zv6000-laptop-running-ubuntu/">
+<link href="http://harishbsrinivas.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="TECH NOTES, RAMBLINGS & WHATNOTS Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://harishbsrinivas.github.io/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://harishbsrinivas.github.io/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://harishbsrinivas.github.io/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://harishbsrinivas.github.io/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://harishbsrinivas.github.io/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://harishbsrinivas.github.io/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://harishbsrinivas.github.io/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://harishbsrinivas.github.io/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://harishbsrinivas.github.io/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://harishbsrinivas.github.io/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://harishbsrinivas.github.io">TECH NOTES, RAMBLINGS & WHATNOTS</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+					    
+					        
+					        
+					    <li><a href="http://about.me/harishbsrinivas" target="_blank">About.me</a></li>
+					  
+					    
+					        
+					    
+					    <li><a href="http://harishbsrinivas.github.io/posts" >All Posts</a></li>
+					  
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+
+	<img src="http://harishbsrinivas.github.io/images/bio-photo.jpg" class="bio-photo" alt="Harish Srinivas bio photo"></a>
+
+<h3>Harish Srinivas</h3>
+<p>“Autodidact with an insatiable thirst for learning something new everyday. Wearer of many hats. DevOp Engineer/Release Engineer, Security Engineer, Linux fanatic, Amateur photographer, Maker & Novice App developer.”</p>
+<a href="mailto:harishbsrinivas@gmail.com" class="author-social" target="_blank"><i class="fa fa-envelope-square"></i> Email</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      
+        <h1><a href="http://harishbsrinivas.github.io/linux/how-to-enable-sd-slot-on-a-zv6000-laptop-running-ubuntu/" rel="bookmark" title="How to enable SD slot on a ZV6000 laptop running Ubuntu">How to enable SD slot on a ZV6000 laptop running Ubuntu</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>I recently switched from fedora core 6 to Ubuntu and over the past few weeks have had no problems with the installation except with the SD slot. I found a <a href="http://ubuntuforums.org/showthread.php?p=2635321" target="_blank">link</a> on the Ubuntu forum that has a small script that would enable the SD slot.</p>
+<p>Here is how to enable the SD slot on any laptop that has an SD slot based on the <strong><em>Texas Instruments PCI6411/6421/6611/6621/7411/7421/7611/7621 </em></strong>chip-sets.</p>
+<p>1. Create a file name sdhci.sh on your desktop with the  following code</p>
+<pre style="border:1px inset;overflow:auto;width:640px;height:498px;text-align:left;margin:0;padding:6px;">#!/bin/sh# from:#http://ubuntuforums.org/showthread.php?p=1614392#post1614392## Get lsb functions
+
+. /lib/lsb/init-functions
+
+LSPCI_ADDRESS=`lspci | grep "FlashMedia" | cut -d " " -f 1`
+
+case "$1" in
+
+start)
+
+log_begin_msg "Configuring card reader"
+
+modprobe fakephp || return 1
+
+setpci -s ${LSPCI_ADDRESS} 86.b=90
+
+setpci -s ${LSPCI_ADDRESS} 4c.b=02 # FlashMedia SD disable
+
+setpci -s ${LSPCI_ADDRESS} 04.b=06 # SDHCI Mem+ BusMaster+
+
+setpci -s ${LSPCI_ADDRESS} 88.b=01 # SDHCI DMA enable
+
+modprobe sdhci || return 1
+
+log_end_msg $?
+
+;;
+
+stop)
+
+log_begin_msg "Shutting down card reader"
+
+modprobe -r sdhci
+
+lsmod | grep -q sdhci &amp;&amp; return 1
+
+setpci -s ${LSPCI_ADDRESS} 88.b=00 # SDHCI DMA disable
+
+setpci -s ${LSPCI_ADDRESS} 04.b=07 # SDHCI Mem- BusMaster-
+
+setpci -s ${LSPCI_ADDRESS} 4c.b=00 # FlashMedia SD enable
+
+setpci -s ${LSPCI_ADDRESS} 86.b=d0
+
+modprobe -r fakephp
+
+log_end_msg $?
+
+;;
+
+*)
+
+log_success_msg "Usage: /etc/init.d/sdhci start|stop"
+
+exit 1
+
+;;
+
+esac
+
+exit 0</pre>
+<p>2. make the file executable using the following command</p>
+<p><code>chmod +x sdhci</code></p>
+<p>3. Execute the file in a terminal using the following command</p>
+<p><code>sudo ./sdhci.sh start<br />
+</code><br />
+If every thing works fine and you will see a message  <em><strong>" * Configuring card reader                                               [ OK ]"   </strong></em></p>
+<p>4. To start this script automatically move the script into /etc/init.d use the following command to accomplish this<br />
+<code><br />
+sudo mv sdhci.sh /etc/init.d</code></p>
+<p>5. finally add the script to be executed during boot sequence by executing the following command</p>
+<p><code>sudo update-rc.d sdhci.sh defaults</code></p>
+<p>you should see the following message on screen</p>
+<p>Adding system startup for /etc/init.d/sdhci.sh ...<br />
+/etc/rc0.d/K20sdhci.sh -&gt; ../init.d/sdhci.sh<br />
+/etc/rc1.d/K20sdhci.sh -&gt; ../init.d/sdhci.sh<br />
+/etc/rc6.d/K20sdhci.sh -&gt; ../init.d/sdhci.sh<br />
+/etc/rc2.d/S20sdhci.sh -&gt; ../init.d/sdhci.sh<br />
+/etc/rc3.d/S20sdhci.sh -&gt; ../init.d/sdhci.sh<br />
+/etc/rc4.d/S20sdhci.sh -&gt; ../init.d/sdhci.sh<br />
+/etc/rc5.d/S20sdhci.sh -&gt; ../init.d/sdhci.sh</p>
+<p>That's it you are done :) , you can now start fooling around with the card reader.</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          
+
+
+
+	<img src="http://harishbsrinivas.github.io/images/bio-photo.jpg" class="bio-photo" alt="Harish Srinivas bio photo"></a>
+
+<h3>Harish Srinivas</h3>
+<p>“Autodidact with an insatiable thirst for learning something new everyday. Wearer of many hats. DevOp Engineer/Release Engineer, Security Engineer, Linux fanatic, Amateur photographer, Maker & Novice App developer.”</p>
+<a href="mailto:harishbsrinivas@gmail.com" class="author-social" target="_blank"><i class="fa fa-envelope-square"></i> Email</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>How to enable SD slot on a ZV6000 laptop running Ubuntu</strong> was published on <time datetime="2007-05-21T13:28:16-04:00">May 21, 2007</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://harishbsrinivas.github.io/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://harishbsrinivas.github.io/automated-deployments-with-docker-ansible-go/" title="Automated deployments with Docker, Ansible & Go (Part 1 of N)">Automated deployments with Docker, Ansible & Go (Part 1 of N)</a></li>
+    
+      <li><a href="http://harishbsrinivas.github.io/changing-hostname-of-your-mac-from-the-t/" title="Changing hostname of your mac from the t">Changing hostname of your mac from the t</a></li>
+    
+      <li><a href="http://harishbsrinivas.github.io/hacks/photography/technology/automating-date-change-on-flickr-photos-with-sikulix/" title="Automating date change on Flickr photos with SikuliX">Automating date change on Flickr photos with SikuliX</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    <div class="google-ads">
+  <!-- 320 x 50 ad -->
+  <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <ins class="adsbygoogle"
+       style="display:inline-block;width:320px;height:50px"
+       data-ad-client=""
+       data-ad-slot=""></ins>
+  <script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div><!-- /.google-ads -->
+
+<span>&copy; 2014 Harish Srinivas. Powered by <a href="http://jekyllrb.com">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://harishbsrinivas.github.io/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://harishbsrinivas.github.io/assets/js/scripts.min.js"></script>
+
+	        
+
+</body>
+</html>

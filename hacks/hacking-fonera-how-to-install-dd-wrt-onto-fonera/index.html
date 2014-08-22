@@ -1,0 +1,306 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Hacking Fonera - How to install  dd-wrt onto fonera &#8211; TECH NOTES, RAMBLINGS & WHATNOTS</title>
+<meta name="description" content="I received the FON router from a friend and decided to install DD-WRT onto it as FON's custom firmware lacks certain features that I wanted. After doing a quick Google search I found out that
+1. the Fonera's firmware version is noting but a customized version of DD-WRT
+2. the Fonera's firmware version which is crippled disables ssh access by default.
+3. the Fonera's firmware version does not allow you to flash custom images of DD-WRT without signed firmware.
+There are several hacks on the net that rely on exploiting certain vulnerabilities in the router software, chief among them is the ability to inject custom commands through a specially crafted set of HTML pages. The HTML pages allow you to enable ssh access on the router by enabling access to port 22 in iptables. Once ssh access is gained a series of steps will enable you to first disable the Fonera router from downloading and reverting to the custom firmware thus disabling SSH access, The tutorial will also enable you to flash the latest version of DD-WRT on to the router.
+The latest hack released by these guys called the kolofonium makes it as easy as changing the DNS settings on the router to enable the SSH shell.
+I downloaded the Tutorial detailing the process from here. A slight change would be to use the kolofonium hack to enable access SSH shell rather then using the 2 HTML pages and once SSH access is gained follow the rest of the tutorial to flash DD-WRT on to the router.  The only problem that I faced during the process was the lack of a cross cable which was easily resolved by cutting up a straight cable and rewiring it to work as a cross cable, the result while not very pretty got the job done.
+
+
+ 
+
+
+Some of the sites that I researched before trying the hack are:
+1. http://stefans.datenbruch.de
+2. http://dltv.wordpress.com 
+3. http://uselesshacks.com
+4. http://www.easy2design.de 
+5. http://en.wikipedia.org/wiki/DD-WRT 
+6. http://www.belkin.com/support/tech/isp/
+7. http://sodoityourself.com
+8. http://www.gettingpumped.com/
+It was pretty straight forward and took about 30 minutes (if only I could type the commands properly it might have gotten done sooner).
+Happy hacking :)
+
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Hacking Fonera - How to install  dd-wrt onto fonera">
+<meta name="twitter:description" content="I received the FON router from a friend and decided to install DD-WRT onto it as FON's custom firmware lacks certain features that I wanted. After doing a quick Google search I found out that
+1. the Fonera's firmware version is noting but a customized version of DD-WRT
+2. the Fonera's firmware version which is crippled disables ssh access by default.
+3. the Fonera's firmware version does not allow you to flash custom images of DD-WRT without signed firmware.
+There are several hacks on the net that rely on exploiting certain vulnerabilities in the router software, chief among them is the ability to inject custom commands through a specially crafted set of HTML pages. The HTML pages allow you to enable ssh access on the router by enabling access to port 22 in iptables. Once ssh access is gained a series of steps will enable you to first disable the Fonera router from downloading and reverting to the custom firmware thus disabling SSH access, The tutorial will also enable you to flash the latest version of DD-WRT on to the router.
+The latest hack released by these guys called the kolofonium makes it as easy as changing the DNS settings on the router to enable the SSH shell.
+I downloaded the Tutorial detailing the process from here. A slight change would be to use the kolofonium hack to enable access SSH shell rather then using the 2 HTML pages and once SSH access is gained follow the rest of the tutorial to flash DD-WRT on to the router.  The only problem that I faced during the process was the lack of a cross cable which was easily resolved by cutting up a straight cable and rewiring it to work as a cross cable, the result while not very pretty got the job done.
+
+
+ 
+
+
+Some of the sites that I researched before trying the hack are:
+1. http://stefans.datenbruch.de
+2. http://dltv.wordpress.com 
+3. http://uselesshacks.com
+4. http://www.easy2design.de 
+5. http://en.wikipedia.org/wiki/DD-WRT 
+6. http://www.belkin.com/support/tech/isp/
+7. http://sodoityourself.com
+8. http://www.gettingpumped.com/
+It was pretty straight forward and took about 30 minutes (if only I could type the commands properly it might have gotten done sooner).
+Happy hacking :)
+
+
+">
+
+
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://harishbsrinivas.github.io/images/default-thumb.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hacking Fonera - How to install  dd-wrt onto fonera">
+<meta property="og:description" content="I received the FON router from a friend and decided to install DD-WRT onto it as FON's custom firmware lacks certain features that I wanted. After doing a quick Google search I found out that
+1. the Fonera's firmware version is noting but a customized version of DD-WRT
+2. the Fonera's firmware version which is crippled disables ssh access by default.
+3. the Fonera's firmware version does not allow you to flash custom images of DD-WRT without signed firmware.
+There are several hacks on the net that rely on exploiting certain vulnerabilities in the router software, chief among them is the ability to inject custom commands through a specially crafted set of HTML pages. The HTML pages allow you to enable ssh access on the router by enabling access to port 22 in iptables. Once ssh access is gained a series of steps will enable you to first disable the Fonera router from downloading and reverting to the custom firmware thus disabling SSH access, The tutorial will also enable you to flash the latest version of DD-WRT on to the router.
+The latest hack released by these guys called the kolofonium makes it as easy as changing the DNS settings on the router to enable the SSH shell.
+I downloaded the Tutorial detailing the process from here. A slight change would be to use the kolofonium hack to enable access SSH shell rather then using the 2 HTML pages and once SSH access is gained follow the rest of the tutorial to flash DD-WRT on to the router.  The only problem that I faced during the process was the lack of a cross cable which was easily resolved by cutting up a straight cable and rewiring it to work as a cross cable, the result while not very pretty got the job done.
+
+
+ 
+
+
+Some of the sites that I researched before trying the hack are:
+1. http://stefans.datenbruch.de
+2. http://dltv.wordpress.com 
+3. http://uselesshacks.com
+4. http://www.easy2design.de 
+5. http://en.wikipedia.org/wiki/DD-WRT 
+6. http://www.belkin.com/support/tech/isp/
+7. http://sodoityourself.com
+8. http://www.gettingpumped.com/
+It was pretty straight forward and took about 30 minutes (if only I could type the commands properly it might have gotten done sooner).
+Happy hacking :)
+
+
+">
+<meta property="og:url" content="http://harishbsrinivas.github.io/hacks/hacking-fonera-how-to-install-dd-wrt-onto-fonera/">
+<meta property="og:site_name" content="TECH NOTES, RAMBLINGS & WHATNOTS">
+
+
+
+
+
+<link rel="canonical" href="http://harishbsrinivas.github.io/hacks/hacking-fonera-how-to-install-dd-wrt-onto-fonera/">
+<link href="http://harishbsrinivas.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="TECH NOTES, RAMBLINGS & WHATNOTS Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://harishbsrinivas.github.io/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://harishbsrinivas.github.io/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://harishbsrinivas.github.io/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://harishbsrinivas.github.io/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://harishbsrinivas.github.io/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://harishbsrinivas.github.io/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://harishbsrinivas.github.io/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://harishbsrinivas.github.io/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://harishbsrinivas.github.io/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://harishbsrinivas.github.io/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://harishbsrinivas.github.io">TECH NOTES, RAMBLINGS & WHATNOTS</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+					    
+					        
+					        
+					    <li><a href="http://about.me/harishbsrinivas" target="_blank">About.me</a></li>
+					  
+					    
+					        
+					    
+					    <li><a href="http://harishbsrinivas.github.io/posts" >All Posts</a></li>
+					  
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+
+	<img src="http://harishbsrinivas.github.io/images/bio-photo.jpg" class="bio-photo" alt="Harish Srinivas bio photo"></a>
+
+<h3>Harish Srinivas</h3>
+<p>“Autodidact with an insatiable thirst for learning something new everyday. Wearer of many hats. DevOp Engineer/Release Engineer, Security Engineer, Linux fanatic, Amateur photographer, Maker & Novice App developer.”</p>
+<a href="mailto:harishbsrinivas@gmail.com" class="author-social" target="_blank"><i class="fa fa-envelope-square"></i> Email</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      
+        <h1><a href="http://harishbsrinivas.github.io/hacks/hacking-fonera-how-to-install-dd-wrt-onto-fonera/" rel="bookmark" title="Hacking Fonera - How to install  dd-wrt onto fonera">Hacking Fonera - How to install  dd-wrt onto fonera</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>I received the FON router from a friend and decided to install DD-WRT onto it as FON's custom firmware lacks certain features that I wanted. After doing a quick Google search I found out that</p>
+<p>1. the Fonera's firmware version is noting but a customized version of DD-WRT<br />
+2. the Fonera's firmware version which is crippled disables ssh access by default.<br />
+3. the Fonera's firmware version does not allow you to flash custom images of DD-WRT without signed firmware.</p>
+<p>There are several hacks on the net that rely on exploiting certain vulnerabilities in the router software, chief among them is the ability to inject custom commands through a specially crafted set of HTML pages. The HTML pages allow you to enable ssh access on the router by enabling access to port 22 in iptables. Once ssh access is gained a series of steps will enable you to first disable the Fonera router from downloading and reverting to the custom firmware thus disabling SSH access, The tutorial will also enable you to flash the latest version of DD-WRT on to the router.</p>
+<p>The latest hack released by <a href="http://stefans.datenbruch.de/lafonera/" target="_blank">these guys</a> called the kolofonium makes it as easy as changing the DNS settings on the router to enable the SSH shell.</p>
+<p>I downloaded the <a href="http://dltv.files.wordpress.com/2007/03/lafonera.pdf" target="_blank">Tutorial detailing the process from here.</a> A slight change would be to use the kolofonium hack to enable access SSH shell rather then using the 2 HTML pages and once SSH access is gained follow the rest of the tutorial to f<strong>la</strong>sh DD-WRT on to the router.  The only problem that I faced during the process was the lack of a cross cable which was easily resolved by cutting up a straight cable and rewiring it to work as a cross cable, the result while not very pretty got the job done.</p>
+<p style="text-align:center;"><img src="assets/dscf0149.jpg" alt="dscf0149.jpg" width="355" height="241" /></p>
+<p><a title="dscf0149.jpg" href="http://cerberos.local/tesla/wp-content/uploads/2007/03/dscf0149.jpg"></a></p>
+<p style="text-align:center;"><a title="dscf0149.jpg" href="http://cerberos.local/tesla/wp-content/uploads/2007/03/dscf0149.jpg"> </a></p>
+<p><a title="dscf0149.jpg" href="http://cerberos.local/tesla/wp-content/uploads/2007/03/dscf0149.jpg"></a></p>
+<p style="text-align:center;"><a title="dscf0149.jpg" href="http://cerberos.local/tesla/wp-content/uploads/2007/03/dscf0149.jpg"><img src="assets/dscf0150.jpg" alt="dscf0150.jpg" width="355" height="241" /></a></p>
+<p>Some of the sites that I researched before trying the hack are:</p>
+<p>1. <a href="http://stefans.datenbruch.de/lafonera/" target="_blank">http://stefans.datenbruch.de</a></p>
+<p>2. <a href="http://dltv.wordpress.com/off-the-wall/a-guide-to-hacking-the-la-fonera-wireless-router/" target="_blank">http://dltv.wordpress.com </a></p>
+<p>3. <a href="http://uselesshacks.com/?p=23" target="_blank">http://uselesshacks.com</a></p>
+<p>4. <a href="http://www.easy2design.de/bla/?page_id=98" target="_blank">http://www.easy2design.de </a></p>
+<p>5. <a href="http://en.wikipedia.org/wiki/DD-WRT" target="_blank">http://en.wikipedia.org/wiki/DD-WRT </a></p>
+<p>6. <a href="http://www.belkin.com/support/tech/isp/" target="_blank">http://www.belkin.com/support/tech/isp/</a></p>
+<p>7. <a href="http://sodoityourself.com/accessing-serial-console-on-the-fon" target="_blank">http://sodoityourself.com</a></p>
+<p>8. <a href="http://www.gettingpumped.com/users/digerati/dd-wrt-fonera/fonera.htm">http://www.gettingpumped.com/</a></p>
+<p>It was pretty straight forward and took about 30 minutes (if only I could type the commands properly it might have gotten done sooner).</p>
+<p>Happy hacking :)</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          
+
+
+
+	<img src="http://harishbsrinivas.github.io/images/bio-photo.jpg" class="bio-photo" alt="Harish Srinivas bio photo"></a>
+
+<h3>Harish Srinivas</h3>
+<p>“Autodidact with an insatiable thirst for learning something new everyday. Wearer of many hats. DevOp Engineer/Release Engineer, Security Engineer, Linux fanatic, Amateur photographer, Maker & Novice App developer.”</p>
+<a href="mailto:harishbsrinivas@gmail.com" class="author-social" target="_blank"><i class="fa fa-envelope-square"></i> Email</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>Hacking Fonera - How to install  dd-wrt onto fonera</strong> was published on <time datetime="2007-03-20T21:46:03-04:00">March 20, 2007</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://harishbsrinivas.github.io/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://harishbsrinivas.github.io/automated-deployments-with-docker-ansible-go/" title="Automated deployments with Docker, Ansible & Go (Part 1 of N)">Automated deployments with Docker, Ansible & Go (Part 1 of N)</a></li>
+    
+      <li><a href="http://harishbsrinivas.github.io/changing-hostname-of-your-mac-from-the-t/" title="Changing hostname of your mac from the t">Changing hostname of your mac from the t</a></li>
+    
+      <li><a href="http://harishbsrinivas.github.io/hacks/photography/technology/automating-date-change-on-flickr-photos-with-sikulix/" title="Automating date change on Flickr photos with SikuliX">Automating date change on Flickr photos with SikuliX</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    <div class="google-ads">
+  <!-- 320 x 50 ad -->
+  <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <ins class="adsbygoogle"
+       style="display:inline-block;width:320px;height:50px"
+       data-ad-client=""
+       data-ad-slot=""></ins>
+  <script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div><!-- /.google-ads -->
+
+<span>&copy; 2014 Harish Srinivas. Powered by <a href="http://jekyllrb.com">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://harishbsrinivas.github.io/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://harishbsrinivas.github.io/assets/js/scripts.min.js"></script>
+
+	        
+
+</body>
+</html>

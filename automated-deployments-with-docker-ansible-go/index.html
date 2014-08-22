@@ -1,0 +1,534 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Automated deployments with Docker, Ansible & Go (Part 1 of N) &#8211; TECH NOTES, RAMBLINGS & WHATNOTS</title>
+<meta name="description" content="I have been experimenting with using Go CD, Ansible and Docker as a means of automating deployments. This post and the subsequent ones document what needs to be done to achieve seamless deployments. The first part of this series will deal with installing and configuring Docker.
+Installing Docker
+If you have never heard of Docker the following links explain what Docker is? and highlight the key differences between containers and VMs see
+
+What is Docker?
+Interactive docker tutorial
+How is Docker.io different from a normal virtual machine?
+
+Now that we know what Docker is? differences between Containers and Virtualization and a few basic commands we can jump right into the thick of things and start setting up a container.
+Note: I tried this on Ubuntu but the steps should be pretty much the same for CentOS or any other variant of Linux.
+Installing Docker on Ubuntu
+Install docker by following the instructions here. Once installed verify that docker is running by typing
+First steps
+Download and start a container
+[code lang=text]
+sudo docker run -i -t ubuntu /bin/bash
+[/code]
+If you are behind a proxy and docker fails to fetch the images, try setting proxy in /etc/default/docker. The command above will download the ubuntu docker image and then launch and Initialize it. because we ran docker in interactive mode (-i) docker will drop you into the container's shell. CTRL+D to exit.
+To start a docker container as a daemon/running in the background use the -d option, One of the most common mistakes is to choose a process that exits right after the container starts, any process that runs inside the container needs to keep running either as a daemon or in the background with '&amp;'. If the process inside the container exits then the the container also exits.
+Interacting with containers
+to see running containers use the command
+docker ps
+To see all containers even the ones that have exited use
+docker ps -a
+to attach to a daemonized container first get the containers ID and then use that with docker's attach command
+docker attach container_id
+to restart a stopped container or to pause a container use
+docker start container_id
+docker pause container_id
+to unpause a paused container use
+docker unpause container_id
+Cleanup
+Docker does not come with a cleanup command yet, you can use a little bash fu
+docker ps -a | grep "weeks ago" | awk '{print $1}' | xargs docker rm
+you can grep for "days ago" or "hours ago"
+or to delete all containers
+docker ps -a -q | xargs docker rm
+Sharing folders
+To mount a host directory in the container use the -v option
+for e.g
+docker run -v /tmp:/tmp/source -t -i ubuntu /bin/bash
+this should mount host directory /tmp to container directory /tmp/source
+you can use apt-get in download only mode with the -d option to download packages and save then in the shared folder. On the host the apt-get -d option downloads the packages to /var/cache/apt/archives
+download and copy any packages you need to install into the hosts /tmp directory then install it from within the container.
+Saving changes to the container
+Once the container is customized to your liking, you need to save the changes to do this use the commit command
+docker commit container_id image_name
+Note: when run in interactive mode the container ID will part of the bash prompt e.g
+root@664cbf2186cb:/tmp/source#
+else you can get the container ID by executing the docker's 'ps' command.
+Docker networking
+By default Docker sets up a network interface called docker0 and assigns a private IP in the 172.x range to this interface, this will be a non-routable address and cannot be reached from the host or the external network. Docker also supports networking between containers using the link command. If you want the docker image to be reachable from the host and outside network there are a couple of ways to achieve this
+
+create a bridge with the active interface.
+Port forwarding
+
+Bridge network
+on ubuntu first install bridge-utils on the host via apt-get
+sudo apt-get install bridge-utils
+Then install pipework. To install first download the shell script
+save it in /usr/bin as pipework and then make it executable.
+To start a container in bridge mode:
+ubuntu=$(docker run -v /tmp:/tmp/source -d phusion/baseimage /usr/bin/weborf &amp;)
+pipework br1 $ubuntu 192.168.1.1/24
+ip addr add 192.168.1.254/24 dev br1
+Port forwarding
+Forwarding a port on the container to the docker host is easy, use the -p option to map a port from the container to a port on the host.
+Note: that the docker container still uses the default IP address in the 172.x.x.x range. Anything not explicitly forwarded will still be inaccesible.
+Docker has two options for port forwarding, EXPOSE and -p option. The difference between these two is that EXPOSE only exposes the port to other docker containers but not to host or external network. the -p option exposes port to host and external network. The -p option implicitly calls  the EXPOSE command.
+Next post will deal with
+
+
+Networking between containers
+Security
+Docker files
+Private repositories
+
+
+References:
+How to remove old docker.io containers
+
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Automated deployments with Docker, Ansible & Go (Part 1 of N)">
+<meta name="twitter:description" content="I have been experimenting with using Go CD, Ansible and Docker as a means of automating deployments. This post and the subsequent ones document what needs to be done to achieve seamless deployments. The first part of this series will deal with installing and configuring Docker.
+Installing Docker
+If you have never heard of Docker the following links explain what Docker is? and highlight the key differences between containers and VMs see
+
+What is Docker?
+Interactive docker tutorial
+How is Docker.io different from a normal virtual machine?
+
+Now that we know what Docker is? differences between Containers and Virtualization and a few basic commands we can jump right into the thick of things and start setting up a container.
+Note: I tried this on Ubuntu but the steps should be pretty much the same for CentOS or any other variant of Linux.
+Installing Docker on Ubuntu
+Install docker by following the instructions here. Once installed verify that docker is running by typing
+First steps
+Download and start a container
+[code lang=text]
+sudo docker run -i -t ubuntu /bin/bash
+[/code]
+If you are behind a proxy and docker fails to fetch the images, try setting proxy in /etc/default/docker. The command above will download the ubuntu docker image and then launch and Initialize it. because we ran docker in interactive mode (-i) docker will drop you into the container's shell. CTRL+D to exit.
+To start a docker container as a daemon/running in the background use the -d option, One of the most common mistakes is to choose a process that exits right after the container starts, any process that runs inside the container needs to keep running either as a daemon or in the background with '&amp;'. If the process inside the container exits then the the container also exits.
+Interacting with containers
+to see running containers use the command
+docker ps
+To see all containers even the ones that have exited use
+docker ps -a
+to attach to a daemonized container first get the containers ID and then use that with docker's attach command
+docker attach container_id
+to restart a stopped container or to pause a container use
+docker start container_id
+docker pause container_id
+to unpause a paused container use
+docker unpause container_id
+Cleanup
+Docker does not come with a cleanup command yet, you can use a little bash fu
+docker ps -a | grep "weeks ago" | awk '{print $1}' | xargs docker rm
+you can grep for "days ago" or "hours ago"
+or to delete all containers
+docker ps -a -q | xargs docker rm
+Sharing folders
+To mount a host directory in the container use the -v option
+for e.g
+docker run -v /tmp:/tmp/source -t -i ubuntu /bin/bash
+this should mount host directory /tmp to container directory /tmp/source
+you can use apt-get in download only mode with the -d option to download packages and save then in the shared folder. On the host the apt-get -d option downloads the packages to /var/cache/apt/archives
+download and copy any packages you need to install into the hosts /tmp directory then install it from within the container.
+Saving changes to the container
+Once the container is customized to your liking, you need to save the changes to do this use the commit command
+docker commit container_id image_name
+Note: when run in interactive mode the container ID will part of the bash prompt e.g
+root@664cbf2186cb:/tmp/source#
+else you can get the container ID by executing the docker's 'ps' command.
+Docker networking
+By default Docker sets up a network interface called docker0 and assigns a private IP in the 172.x range to this interface, this will be a non-routable address and cannot be reached from the host or the external network. Docker also supports networking between containers using the link command. If you want the docker image to be reachable from the host and outside network there are a couple of ways to achieve this
+
+create a bridge with the active interface.
+Port forwarding
+
+Bridge network
+on ubuntu first install bridge-utils on the host via apt-get
+sudo apt-get install bridge-utils
+Then install pipework. To install first download the shell script
+save it in /usr/bin as pipework and then make it executable.
+To start a container in bridge mode:
+ubuntu=$(docker run -v /tmp:/tmp/source -d phusion/baseimage /usr/bin/weborf &amp;)
+pipework br1 $ubuntu 192.168.1.1/24
+ip addr add 192.168.1.254/24 dev br1
+Port forwarding
+Forwarding a port on the container to the docker host is easy, use the -p option to map a port from the container to a port on the host.
+Note: that the docker container still uses the default IP address in the 172.x.x.x range. Anything not explicitly forwarded will still be inaccesible.
+Docker has two options for port forwarding, EXPOSE and -p option. The difference between these two is that EXPOSE only exposes the port to other docker containers but not to host or external network. the -p option exposes port to host and external network. The -p option implicitly calls  the EXPOSE command.
+Next post will deal with
+
+
+Networking between containers
+Security
+Docker files
+Private repositories
+
+
+References:
+How to remove old docker.io containers
+
+
+">
+
+
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://harishbsrinivas.github.io/images/default-thumb.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Automated deployments with Docker, Ansible & Go (Part 1 of N)">
+<meta property="og:description" content="I have been experimenting with using Go CD, Ansible and Docker as a means of automating deployments. This post and the subsequent ones document what needs to be done to achieve seamless deployments. The first part of this series will deal with installing and configuring Docker.
+Installing Docker
+If you have never heard of Docker the following links explain what Docker is? and highlight the key differences between containers and VMs see
+
+What is Docker?
+Interactive docker tutorial
+How is Docker.io different from a normal virtual machine?
+
+Now that we know what Docker is? differences between Containers and Virtualization and a few basic commands we can jump right into the thick of things and start setting up a container.
+Note: I tried this on Ubuntu but the steps should be pretty much the same for CentOS or any other variant of Linux.
+Installing Docker on Ubuntu
+Install docker by following the instructions here. Once installed verify that docker is running by typing
+First steps
+Download and start a container
+[code lang=text]
+sudo docker run -i -t ubuntu /bin/bash
+[/code]
+If you are behind a proxy and docker fails to fetch the images, try setting proxy in /etc/default/docker. The command above will download the ubuntu docker image and then launch and Initialize it. because we ran docker in interactive mode (-i) docker will drop you into the container's shell. CTRL+D to exit.
+To start a docker container as a daemon/running in the background use the -d option, One of the most common mistakes is to choose a process that exits right after the container starts, any process that runs inside the container needs to keep running either as a daemon or in the background with '&amp;'. If the process inside the container exits then the the container also exits.
+Interacting with containers
+to see running containers use the command
+docker ps
+To see all containers even the ones that have exited use
+docker ps -a
+to attach to a daemonized container first get the containers ID and then use that with docker's attach command
+docker attach container_id
+to restart a stopped container or to pause a container use
+docker start container_id
+docker pause container_id
+to unpause a paused container use
+docker unpause container_id
+Cleanup
+Docker does not come with a cleanup command yet, you can use a little bash fu
+docker ps -a | grep "weeks ago" | awk '{print $1}' | xargs docker rm
+you can grep for "days ago" or "hours ago"
+or to delete all containers
+docker ps -a -q | xargs docker rm
+Sharing folders
+To mount a host directory in the container use the -v option
+for e.g
+docker run -v /tmp:/tmp/source -t -i ubuntu /bin/bash
+this should mount host directory /tmp to container directory /tmp/source
+you can use apt-get in download only mode with the -d option to download packages and save then in the shared folder. On the host the apt-get -d option downloads the packages to /var/cache/apt/archives
+download and copy any packages you need to install into the hosts /tmp directory then install it from within the container.
+Saving changes to the container
+Once the container is customized to your liking, you need to save the changes to do this use the commit command
+docker commit container_id image_name
+Note: when run in interactive mode the container ID will part of the bash prompt e.g
+root@664cbf2186cb:/tmp/source#
+else you can get the container ID by executing the docker's 'ps' command.
+Docker networking
+By default Docker sets up a network interface called docker0 and assigns a private IP in the 172.x range to this interface, this will be a non-routable address and cannot be reached from the host or the external network. Docker also supports networking between containers using the link command. If you want the docker image to be reachable from the host and outside network there are a couple of ways to achieve this
+
+create a bridge with the active interface.
+Port forwarding
+
+Bridge network
+on ubuntu first install bridge-utils on the host via apt-get
+sudo apt-get install bridge-utils
+Then install pipework. To install first download the shell script
+save it in /usr/bin as pipework and then make it executable.
+To start a container in bridge mode:
+ubuntu=$(docker run -v /tmp:/tmp/source -d phusion/baseimage /usr/bin/weborf &amp;)
+pipework br1 $ubuntu 192.168.1.1/24
+ip addr add 192.168.1.254/24 dev br1
+Port forwarding
+Forwarding a port on the container to the docker host is easy, use the -p option to map a port from the container to a port on the host.
+Note: that the docker container still uses the default IP address in the 172.x.x.x range. Anything not explicitly forwarded will still be inaccesible.
+Docker has two options for port forwarding, EXPOSE and -p option. The difference between these two is that EXPOSE only exposes the port to other docker containers but not to host or external network. the -p option exposes port to host and external network. The -p option implicitly calls  the EXPOSE command.
+Next post will deal with
+
+
+Networking between containers
+Security
+Docker files
+Private repositories
+
+
+References:
+How to remove old docker.io containers
+
+
+">
+<meta property="og:url" content="http://harishbsrinivas.github.io/automated-deployments-with-docker-ansible-go/">
+<meta property="og:site_name" content="TECH NOTES, RAMBLINGS & WHATNOTS">
+
+
+
+
+
+<link rel="canonical" href="http://harishbsrinivas.github.io/automated-deployments-with-docker-ansible-go/">
+<link href="http://harishbsrinivas.github.io/feed.xml" type="application/atom+xml" rel="alternate" title="TECH NOTES, RAMBLINGS & WHATNOTS Feed">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="http://harishbsrinivas.github.io/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="http://harishbsrinivas.github.io/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="http://harishbsrinivas.github.io/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="http://harishbsrinivas.github.io/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="http://harishbsrinivas.github.io/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="http://harishbsrinivas.github.io/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="http://harishbsrinivas.github.io/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://harishbsrinivas.github.io/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://harishbsrinivas.github.io/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://harishbsrinivas.github.io/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="http://harishbsrinivas.github.io">TECH NOTES, RAMBLINGS & WHATNOTS</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+					    
+					        
+					        
+					    <li><a href="http://about.me/harishbsrinivas" target="_blank">About.me</a></li>
+					  
+					    
+					        
+					    
+					    <li><a href="http://harishbsrinivas.github.io/posts" >All Posts</a></li>
+					  
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+
+	<img src="http://harishbsrinivas.github.io/images/bio-photo.jpg" class="bio-photo" alt="Harish Srinivas bio photo"></a>
+
+<h3>Harish Srinivas</h3>
+<p>“Autodidact with an insatiable thirst for learning something new everyday. Wearer of many hats. DevOp Engineer/Release Engineer, Security Engineer, Linux fanatic, Amateur photographer, Maker & Novice App developer.”</p>
+<a href="mailto:harishbsrinivas@gmail.com" class="author-social" target="_blank"><i class="fa fa-envelope-square"></i> Email</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <article>
+    <div class="headline-wrap">
+      
+        <h1><a href="http://harishbsrinivas.github.io/automated-deployments-with-docker-ansible-go/" rel="bookmark" title="Automated deployments with Docker, Ansible & Go (Part 1 of N)">Automated deployments with Docker, Ansible & Go (Part 1 of N)</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>I have been experimenting with using <a href="http://www.go.cd">Go CD</a>, <a href="http://www.ansible.com/home">Ansible</a> and <a href="http://www.docker.io">Docker</a> as a means of automating deployments. This post and the subsequent ones document what needs to be done to achieve seamless deployments. The first part of this series will deal with installing and configuring Docker.</p>
+<h2>Installing Docker</h2>
+<p>If you have never heard of Docker the following links explain what Docker is? and highlight the key differences between containers and VMs see</p>
+<ul>
+<li><a href="http://www.docker.com/whatisdocker/">What is Docker?</a></li>
+<li><a href="http://www.docker.com/tryit/">Interactive docker tutorial</a></li>
+<li><a href="http://stackoverflow.com/a/16048358">How is Docker.io different from a normal virtual machine?</a></li>
+</ul>
+<p>Now that we know what Docker is? differences between Containers and Virtualization and a few basic commands we can jump right into the thick of things and start setting up a container.</p>
+<p>Note: I tried this on Ubuntu but the steps should be pretty much the same for CentOS or any other variant of Linux.</p>
+<h3>Installing Docker on Ubuntu</h3>
+<p>Install docker by following the instructions <a href="http://docs.docker.com/installation/ubuntulinux/">here</a>. Once installed verify that docker is running by typing</p>
+<h3>First steps</h3>
+<h4>Download and start a container</h4>
+<p>[code lang=text]<br />
+sudo docker run -i -t ubuntu /bin/bash<br />
+[/code]</p>
+<p>If you are behind a proxy and docker fails to fetch the images, try setting proxy in /etc/default/docker. The command above will download the ubuntu docker image and then launch and Initialize it. because we ran docker in interactive mode (<strong>-i</strong>) docker will drop you into the container's shell. CTRL+D to exit.</p>
+<p>To start a docker container as a daemon/running in the background use the -d option, One of the most common mistakes is to choose a process that exits right after the container starts, any process that runs inside the container needs to keep running either as a daemon or in the background with <strong>'&amp;'</strong>. If the process inside the container exits then the the container also exits.</p>
+<h4>Interacting with containers</h4>
+<p>to see running containers use the command</p>
+<p><code>docker ps</code></p>
+<p>To see all containers even the ones that have exited use</p>
+<p><code>docker ps -a</code></p>
+<p>to attach to a daemonized container first get the containers ID and then use that with docker's attach command</p>
+<p><code>docker attach container_id</code></p>
+<p>to restart a stopped container or to pause a container use</p>
+<p><code>docker start container_id<br />
+docker pause container_id</code></p>
+<p>to unpause a paused container use</p>
+<p><code>docker unpause container_id</code></p>
+<h4>Cleanup</h4>
+<p>Docker does not come with a cleanup command yet, you can use a little bash fu</p>
+<p><code>docker ps -a | grep "weeks ago" | awk '{print $1}' | xargs docker rm</code></p>
+<p>you can grep for "days ago" or "hours ago"</p>
+<p>or to delete all containers</p>
+<p><code>docker ps -a -q | xargs docker rm</code></p>
+<h4>Sharing folders</h4>
+<p>To mount a host directory in the container use the -v option</p>
+<p>for e.g</p>
+<p><code>docker run -v /tmp:/tmp/source -t -i ubuntu /bin/bash</code></p>
+<p>this should mount host directory /tmp to container directory /tmp/source</p>
+<p>you can use apt-get in download only mode with the -d option to download packages and save then in the shared folder. On the host the apt-get -d option downloads the packages to /var/cache/apt/archives</p>
+<p>download and copy any packages you need to install into the hosts /tmp directory then install it from within the container.</p>
+<h4>Saving changes to the container</h4>
+<p>Once the container is customized to your liking, you need to save the changes to do this use the commit command</p>
+<p><code>docker commit container_id image_name</code></p>
+<p>Note: when run in interactive mode the container ID will part of the bash prompt e.g</p>
+<p>root@664cbf2186cb:/tmp/source#</p>
+<p>else you can get the container ID by executing the docker's 'ps' command.</p>
+<h4>Docker networking</h4>
+<p>By default Docker sets up a network interface called docker0 and assigns a private IP in the 172.x range to this interface, this will be a non-routable address and cannot be reached from the host or the external network. Docker also supports networking between containers using the link command. If you want the docker image to be reachable from the host and outside network there are a couple of ways to achieve this</p>
+<ul>
+<li>create a bridge with the active interface.</li>
+<li>Port forwarding</li>
+</ul>
+<h5>Bridge network</h5>
+<p>on ubuntu first install bridge-utils on the host via apt-get</p>
+<p><code>sudo apt-get install bridge-utils</code></p>
+<p>Then install <a href="https://github.com/jpetazzo/pipework">pipework</a>. To install first download the shell <a href="https://raw.githubusercontent.com/jpetazzo/pipework/master/pipework">script</a></p>
+<p>save it in /usr/bin as pipework and then make it executable.</p>
+<p>To start a container in bridge mode:</p>
+<p>ubuntu=$(docker run -v /tmp:/tmp/source -d phusion/baseimage /usr/bin/weborf &amp;)<br />
+pipework br1 $ubuntu 192.168.1.1/24<br />
+ip addr add 192.168.1.254/24 dev br1</p>
+<h5>Port forwarding</h5>
+<p>Forwarding a port on the container to the docker host is easy, use the -p option to map a port from the container to a port on the host.<br />
+Note: that the docker container still uses the default IP address in the 172.x.x.x range. Anything not explicitly forwarded will still be inaccesible.</p>
+<p>Docker has two options for port forwarding, EXPOSE and -p option. The difference between these two is that EXPOSE only exposes the port to other docker containers but not to host or external network. the -p option exposes port to host and external network. The -p option implicitly calls  the EXPOSE command.</p>
+<p>Next post will deal with</p>
+<blockquote>
+<ul>
+<li>Networking between containers</li>
+<li>Security</li>
+<li>Docker files</li>
+<li>Private repositories</li>
+</ul>
+</blockquote>
+<p><strong>References:</strong><br />
+<a href="http://stackoverflow.com/questions/17236796/how-to-remove-old-docker-io-containers">How to remove old docker.io containers</a></p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="article-author-bottom">
+          
+
+
+
+	<img src="http://harishbsrinivas.github.io/images/bio-photo.jpg" class="bio-photo" alt="Harish Srinivas bio photo"></a>
+
+<h3>Harish Srinivas</h3>
+<p>“Autodidact with an insatiable thirst for learning something new everyday. Wearer of many hats. DevOp Engineer/Release Engineer, Security Engineer, Linux fanatic, Amateur photographer, Maker & Novice App developer.”</p>
+<a href="mailto:harishbsrinivas@gmail.com" class="author-social" target="_blank"><i class="fa fa-envelope-square"></i> Email</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <p class="byline"><strong>Automated deployments with Docker, Ansible & Go (Part 1 of N)</strong> was published on <time datetime="2014-06-07T04:50:30-04:00">June 07, 2014</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="http://harishbsrinivas.github.io/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="http://harishbsrinivas.github.io/changing-hostname-of-your-mac-from-the-t/" title="Changing hostname of your mac from the t">Changing hostname of your mac from the t</a></li>
+    
+      <li><a href="http://harishbsrinivas.github.io/hacks/photography/technology/automating-date-change-on-flickr-photos-with-sikulix/" title="Automating date change on Flickr photos with SikuliX">Automating date change on Flickr photos with SikuliX</a></li>
+    
+      <li><a href="http://harishbsrinivas.github.io/programming/scripts/one-line-shell-script-to-delete-all-lines-starting-from-a-specific-pattern-to-the-end-of-file/" title="One line shell script to delete all lines starting from a specific pattern to the end of file">One line shell script to delete all lines starting from a specific pattern to the end of file</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    <div class="google-ads">
+  <!-- 320 x 50 ad -->
+  <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <ins class="adsbygoogle"
+       style="display:inline-block;width:320px;height:50px"
+       data-ad-client=""
+       data-ad-slot=""></ins>
+  <script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div><!-- /.google-ads -->
+
+<span>&copy; 2014 Harish Srinivas. Powered by <a href="http://jekyllrb.com">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="http://harishbsrinivas.github.io/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="http://harishbsrinivas.github.io/assets/js/scripts.min.js"></script>
+
+	        
+
+</body>
+</html>
